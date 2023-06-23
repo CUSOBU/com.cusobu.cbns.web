@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import apiClient from "../../services/EntityApiServices";
+import { formatDate } from "../../utils";
 
 const columns = [
   {
@@ -8,7 +9,10 @@ const columns = [
     headerName: "Full name",
     description: "This column has a value getter and is not sortable.",
     sortable: false,
-    width: 160,
+    minWidth: 160,
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
     valueGetter: (params) =>
       `${params.row.firstName || ""} ${params.row.lastName || ""}`,
   },
@@ -16,30 +20,42 @@ const columns = [
     field: "email",
     headerName: "Email",
     type: "email",
-    width: 220,
+    minWidth: 220,
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
   },
   {
     field: "price",
     headerName: "Price",
     type: "number",
-    width: 70,
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
   },
   {
     field: "product",
     headerName: "Product",
-    width: 100,
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
   },
   {
     field: "phone",
     headerName: "Phone",
     type: "number",
-    width: 160,
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
   },
   {
-    field: "date",
-    headerName: "Date",
+    field: "createdAt",
+    headerName: "Created At",
     type: "string",
-    width: 160,
+    flex: 1,
+    align: "center",
+    headerAlign: "center",
+    renderCell: ({ value }) => formatDate(value),
   },
 ];
 
@@ -65,7 +81,6 @@ const DataTable = () => {
 
   return (
     <DataGrid
-      width="100vw"
       rows={data}
       loading={loading}
       error={error}
