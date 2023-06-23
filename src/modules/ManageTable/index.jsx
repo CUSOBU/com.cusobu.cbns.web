@@ -16,25 +16,30 @@ const columns = [
     field: "email",
     headerName: "Email",
     type: "email",
+    width: 220,
   },
   {
     field: "price",
     headerName: "Price",
     type: "number",
+    width: 70,
   },
   {
     field: "product",
     headerName: "Product",
+    width: 100,
   },
   {
     field: "phone",
     headerName: "Phone",
     type: "number",
+    width: 160,
   },
   {
     field: "date",
     headerName: "Date",
     type: "string",
+    width: 160,
   },
 ];
 
