@@ -10,5 +10,9 @@ export const store = configureStore({
     users: usersReducer,
     session: sessionReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
   devTools: process.env.NODE_ENV !== "production", // eslint-disable-line
 });

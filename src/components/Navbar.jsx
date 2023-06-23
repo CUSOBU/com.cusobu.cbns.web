@@ -41,13 +41,11 @@ const AppBar = styled(MuiAppBar, {
 const Navbar = () => {
   const { pathname } = useLocation();
   const dispatch = useDispatch();
-  const {
-    anchorElUser,
-    sideBarOpen: open,
-  } = useSelector((state) => state.app);
+  const { anchorElUser, sideBarOpen: open } = useSelector((state) => state.app);
+  const { isAuth } = useSelector((state) => state.session);
 
   const handleOpenUserMenu = (event) => {
-    dispatch(setAnchorElUser(event));
+    dispatch(setAnchorElUser(event.currentTarget));
   };
 
   const handleCloseUserMenu = () => {
@@ -59,77 +57,77 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="absolute" open={open}>
-    <Toolbar
-      sx={{
-        pr: "24px", // keep right padding when drawer closed
-      }}
-    >
-      <IconButton
-        edge="start"
-        color="primary"
-        onClick={toggleDrawer}
-        sx={{
-          marginRight: "8px",
-          ...(open
-            ? { display: "none" }
-            : { paddingLeft: "65px", color: "primary" }),
-        }}
-      >
-        <MenuIcon />
-      </IconButton>
-      <Typography
-        component="h1"
-        variant="h6"
-        color="inherit"
-        noWrap
-        sx={{ flexGrow: 1 }}
-      >
-        {navigation.find((nav) => nav.link === pathname)?.title ??
-          "Dashboard"}
-      </Typography>
-      <IconButton color="inherit">
-        <Badge badgeContent={4} color="secondary">
-          <NotificationsIcon />
-        </Badge>
-      </IconButton>
-      <IconButton
-        size="large"
-        edge="end"
-        aria-label="account of current user"
-        aria-haspopup="true"
-        onClick={handleOpenUserMenu}
-        color="inherit"
-      >
-        <Avatar
-          alt="Remy Sharp"
-          src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/666.jpg"
-        />
-      </IconButton>
-      <Menu
-        sx={{ mt: "45px" }}
-        id="menu-appbar"
-        anchorEl={anchorElUser}
-        anchorOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "right",
-        }}
-        open={Boolean(anchorElUser)}
-        onClose={handleOpenUserMenu}
-      >
-        {settings.map((setting) => (
-          <MenuItem key={setting} onClick={handleCloseUserMenu}>
-            <Typography textAlign="center">{setting}</Typography>
-          </MenuItem>
-        ))}
-      </Menu>
-    </Toolbar>
-  </AppBar>
+    <AppBar position="fixed" open={open}>
+      <Toolbar>
+        <IconButton
+          edge="start"
+          color="primary"
+          onClick={toggleDrawer}
+          sx={{
+            marginRight: "8px",
+            ...(open
+              ? { display: "none" }
+              : { paddingLeft: "65px", color: "primary" }),
+          }}
+        >
+          <MenuIcon />
+        </IconButton>
+        <Typography
+          component="h1"
+          variant="h6"
+          color="inherit"
+          noWrap
+          sx={{ flexGrow: 1 }}
+        >
+          {navigation.find((nav) => nav.link === pathname)?.title ??
+            "Dashboard"}
+        </Typography>
+        <IconButton color="inherit">
+          <Badge badgeContent={4} color="secondary">
+            <NotificationsIcon />
+          </Badge>
+        </IconButton>
+        {isAuth && (
+          <>
+            <IconButton
+              size="large"
+              aria-label="account of current user"
+              aria-controls="menu-appbar"
+              aria-haspopup="true"
+              onClick={handleOpenUserMenu}
+              color="inherit"
+            >
+              <Avatar
+                alt="Remy Sharp"
+                src="https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/666.jpg"
+              />
+            </IconButton>
+            <Menu
+              sx={{ mt: "45px" }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              keepMounted
+              transformOrigin={{
+                vertical: "top",
+                horizontal: "right",
+              }}
+              open={Boolean(anchorElUser)}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </>
+        )}
+      </Toolbar>
+    </AppBar>
   );
 };
 
