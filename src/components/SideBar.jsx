@@ -3,6 +3,7 @@ import { styled, Toolbar, IconButton } from "@mui/material";
 import MuiDrawer from "@mui/material/Drawer";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import { toggleSideBar } from "../redux/states/app.state";
+import logo from "../assets/react.svg";
 
 import SideMenu from "./SideMenu";
 
@@ -53,7 +54,7 @@ const SideBar = () => {
           px: [1],
         }}
       >
-        <img src="../assets/react.svg" width={45} height={45} alt="logo" />
+        <img src={logo} width={45} height={45} alt="logo" />
         <IconButton
           onClick={toggleDrawer}
           sx={{

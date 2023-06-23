@@ -5,7 +5,7 @@ import { Loadable } from "../components";
 import { MainLayout } from "../layouts";
 
 // render - dashboard
-const ManageTableDefault = Loadable(lazy(() => import("../pages/ManageTable")));
+const ManageTableDefault = Loadable(lazy(() => import("../modules/ManageTable")));
 
 // ==============================|| MAIN ROUTING ||============================== //
 

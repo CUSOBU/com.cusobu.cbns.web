@@ -5,8 +5,8 @@ import { Loadable } from "../components";
 import { AuthLayout } from "../layouts";
 
 // render - login
-const AuthLogin = Loadable(lazy(() => import("../pages/SignIn")));
-const AuthRegister = Loadable(lazy(() => import("../pages/SignUp")));
+const AuthLogin = Loadable(lazy(() => import("../modules/SignIn")));
+const AuthRegister = Loadable(lazy(() => import("../modules/SignUp")));
 
 // ==============================|| AUTH ROUTING ||============================== //
 
