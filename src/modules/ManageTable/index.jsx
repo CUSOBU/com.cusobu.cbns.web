@@ -86,6 +86,7 @@ const DataTable = () => {
   return (
     <DataGrid
       rows={data}
+      getRowId={gridRow => gridRow.id}
       loading={loading}
       error={error}
       columns={columns}
