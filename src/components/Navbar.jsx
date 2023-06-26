@@ -57,7 +57,7 @@ const Navbar = () => {
   };
 
   return (
-    <AppBar position="fixed" open={open}>
+    <AppBar position="fixed" sx={{ zIndex: "1100" }} open={open}>
       <Toolbar>
         <IconButton
           edge="start"
@@ -67,7 +67,7 @@ const Navbar = () => {
             marginRight: "8px",
             ...(open
               ? { display: "none" }
-              : { paddingLeft: "65px", color: "primary" }),
+              : { marginLeft: "40px", color: "primary" }),
           }}
         >
           <MenuIcon />

@@ -40,7 +40,6 @@ const SideBar = () => {
   const dispatch = useDispatch();
 
   const toggleDrawer = () => {
-    console.log("ajsjjkdkjfdkj", open);
     dispatch(toggleSideBar(!open));
   };
 
@@ -64,6 +63,7 @@ const SideBar = () => {
             left: "222px",
             border: "1px dashed rgba(0, 0, 0, 0.12)",
             padding: "4px",
+            zIndex: '20000'
           }}
         >
           <ChevronLeftIcon />

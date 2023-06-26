@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { DataGrid } from "@mui/x-data-grid";
+import Container from "@mui/material/Container";
 import apiClient from "../../services/EntityApiServices";
 import { formatDate } from "../../utils";
 
@@ -38,7 +39,7 @@ const columns = [
     field: "product",
     headerName: "Product",
     flex: 1,
-    minWidth: 160,
+    minWidth: 130,
     align: "center",
     headerAlign: "center",
   },
@@ -56,7 +57,7 @@ const columns = [
     headerName: "Created At",
     type: "string",
     flex: 1,
-    minWidth: 160,
+    minWidth: 130,
     align: "center",
     headerAlign: "center",
     renderCell: ({ value }) => formatDate(value),
@@ -66,7 +67,7 @@ const columns = [
 const DataTable = () => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
 
   useEffect(() => {
     fetchData();
@@ -77,27 +78,29 @@ const DataTable = () => {
       const response = await apiClient.get("/buy");
       setData(response);
       setLoading(false);
-    } catch (error) {
-      setError(error);
+    } catch (err) {
+      //setError(err);
       setLoading(false);
     }
   };
 
   return (
-    <DataGrid
-      rows={data}
-      getRowId={gridRow => gridRow.id}
-      loading={loading}
-      error={error}
-      columns={columns}
-      initialState={{
-        pagination: {
-          paginationModel: { page: 0, pageSize: 5 },
-        },
-      }}
-      pageSizeOptions={[5, 10]}
-      checkboxSelection
-    />
+    <Container maxWidth="xl">
+      <DataGrid
+        rows={data ?? []}
+        columns={columns}
+        loading={loading}
+        getRowId={(gridRow) => gridRow.id}
+        autoHeight
+        initialState={{
+          pagination: {
+            paginationModel: { page: 0, pageSize: 5 },
+          },
+        }}
+        pageSizeOptions={[5, 10]}
+        checkboxSelection
+      />
+    </Container>
   );
 };
 
