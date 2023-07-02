@@ -2,7 +2,6 @@ import DashboardIcon from "@mui/icons-material/Dashboard";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
-import env from "../utils/env";
 
 export const navigation = [
   {

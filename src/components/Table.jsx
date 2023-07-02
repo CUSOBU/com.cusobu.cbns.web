@@ -1,14 +1,20 @@
-import {useState} from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
 import { DataGrid } from "@mui/x-data-grid";
 import Container from "@mui/material/Container";
 
-const Table = ({ data = [], columns = [], loading = false, pageSize = 20, page = 0, pageSizeOptions= [1, 10, 20] }) => {
-    const [paginationModel, setPaginationModel] = useState({
-        pageSize,
-        page
-      });
-    
+const Table = ({
+  data = [],
+  columns = [],
+  loading = false,
+  pageSize = 20,
+  page = 0,
+  pageSizeOptions = [1, 10, 20],
+}) => {
+  const [paginationModel, setPaginationModel] = useState({
+    pageSize,
+    page,
+  });
 
   return (
     <Container maxWidth="xl">
@@ -35,7 +41,10 @@ const Table = ({ data = [], columns = [], loading = false, pageSize = 20, page =
 Table.propTypes = {
   data: PropTypes.array.isRequired,
   columns: PropTypes.array.isRequired,
-  loading: PropTypes.boolean,
+  loading: PropTypes.bool,
+  pageSize: PropTypes.number,
+  page: PropTypes.number,
+  pageSizeOptions: PropTypes.any,
 };
 
 export default Table;

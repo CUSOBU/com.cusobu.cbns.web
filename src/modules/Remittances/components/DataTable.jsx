@@ -34,7 +34,16 @@ const DataTable = ({ status, startDate, endDate }) => {
     fetchData();
   }, []);
 
-  return <Table data={data} columns={getColumns} loading={loading} />;
+  return (
+    <Table
+      data={data}
+      columns={getColumns}
+      loading={loading || false}
+      page={0}
+      pageSize={20}
+      pageSizeOptions={[5, 10, 20]}
+    />
+  );
 };
 
 DataTable.propTypes = {
