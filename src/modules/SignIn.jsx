@@ -1,12 +1,13 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { publicAPI } from "../services/EntityApiServices";
+
 import {
   Avatar,
+  Alert,
   Button,
   TextField,
-  FormControlLabel,
-  Checkbox,
-  Link,
   Paper,
   Box,
   Grid,
@@ -15,32 +16,35 @@ import {
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import { login } from "../redux/states/session.state";
 
-const mockUser = {
-  createdAt: "2023-05-22T08:27:50.581Z",
-  firstName: "Carl Mann",
-  avatar:
-    "https://cloudflare-ipfs.com/ipfs/Qmd3W5DuhgHirLHGVixi6V76LhCkZUz6pnFt5AJBiyvHye/avatar/666.jpg",
-  lastName: "Keebler",
-  email: "Winfield9@yahoo.com",
-  userName: "Marjory72",
-  updatedAt: "2023-05-22T17:21:19.924Z",
-  roles: ["user", "admin"],
-  id: "11",
-};
-
 const SignIn = () => {
   const dispatch = useDispatch();
   const navigateTo = useNavigate();
+  const [error, setError] = useState(null);
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    dispatch(login(mockUser));
-    navigateTo("/");
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
+
+    const data = await publicAPI.post("/login", { email, password });
+    console.log(data);
+
+    if (data && data.token_jwt) {
+      // Save token on localStorage 
+      localStorage.setItem("token", data.token_jwt);
+
+      // Save user data on localStorage
+      const userData = { email: data.email, roles: data.roles };
+
+      dispatch(login(userData));
+      sessionStorage.setItem("user", email);
+      sessionStorage.setItem("roles", data.roles);
+      navigateTo("/remittances");
+    } else {
+      // Handle errors
+      setError(data.error);
+    }
   };
 
   return (
@@ -72,6 +76,11 @@ const SignIn = () => {
           Sign in
         </Typography>
         <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
+          {error && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {error}
+            </Alert>
+          )}
           <TextField
             margin="normal"
             required
@@ -92,10 +101,10 @@ const SignIn = () => {
             id="password"
             autoComplete="current-password"
           />
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -105,16 +114,16 @@ const SignIn = () => {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
+            {/* <Grid item xs>
               <Link variant="body2" href="/forgot">
                 Forgot password?
               </Link>
-            </Grid>
-            <Grid item>
+            </Grid> */}
+            {/* <Grid item>
               <Link variant="body2" href="/register">
                 {"Don't have an account? Sign Up"}
               </Link>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
       </Box>

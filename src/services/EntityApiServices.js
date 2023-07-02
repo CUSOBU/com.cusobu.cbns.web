@@ -1,11 +1,13 @@
 import axios from "axios";
+import  utils from "../utils/env";
 
 class API {
-  constructor(baseURL) {
+  constructor(baseURL, token) {
     this.client = axios.create({
       baseURL: baseURL,
       headers: {
         "Content-Type": "application/json",
+        ...(token && { Authorization: token}),
       },
     });
   }
@@ -22,7 +24,7 @@ class API {
   async post(url, data) {
     try {
       const response = await this.client.post(url, data);
-      return response;
+      return response.data;
     } catch (error) {
       throw this.handleError(error);
     }
@@ -52,5 +54,9 @@ class API {
   }
 }
 
-// eslint-disable-next-line
-export default new API("https://6375718c48dfab73a4f9408b.mockapi.io/api/v1/"); 
+export const publicAPI = new API("utils.api_url");
+
+export const authAPI = new API(utils.api_url, localStorage.getItem("token")||"");
+
+export default API;
+

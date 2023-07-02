@@ -1,61 +1,37 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
-import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import PeopleIcon from "@mui/icons-material/People";
-import BarChartIcon from "@mui/icons-material/BarChart";
-import LayersIcon from "@mui/icons-material/Layers";
-import AssignmentIcon from "@mui/icons-material/Assignment";
+import SmsFailedIcon from '@mui/icons-material/SmsFailed';
+import AutorenewIcon from '@mui/icons-material/Autorenew';
+import DoneAllIcon from '@mui/icons-material/DoneAll';
+import env from "../utils/env";
+
 
 export const navigation = [
   {
     title: "Dashboard",
     exact: false,
-    link: "/",
-    icon: <DashboardIcon />,
-  },
-  {
-    title: "Orders",
-    exact: false,
-    link: "/orders",
-    icon: <ShoppingCartIcon />,
-  },
-  {
-    title: "Customers",
-    exact: false,
-    link: "/customers",
-    icon: <PeopleIcon />,
-  },
-  {
-    title: "Reports",
-    exact: false,
-    link: "/reports",
-    icon: <BarChartIcon />,
-  },
-  {
-    title: "Integrations",
-    exact: false,
-    link: "/integrations",
-    icon: <LayersIcon />,
+    link: `${env.url}/`,
+    icon: <DashboardIcon/>,
   },
   {
     header: true,
-    title: "Saved reports",
+    title: `Remittances`,
   },
   {
-    title: "Current month",
+    title: "Procesando",
     exact: false,
-    link: "/current-month",
-    icon: <AssignmentIcon />,
+    link: `${env.url}/remittances`,
+    icon: <AutorenewIcon/>,
   },
   {
-    title: "Last quarter",
+    title: "Completadas",
     exact: false,
-    link: "/last-quarter",
-    icon: <AssignmentIcon />,
+    link: `${env.url}/remittances_completed`,
+    icon: <DoneAllIcon />,
   },
   {
-    title: "Year-end sale",
+    title: "Fallidas",
     exact: false,
-    link: "/year-end-month",
-    icon: <AssignmentIcon />,
+    link: `${env.url}/remittances_fails`,
+    icon: <SmsFailedIcon />,
   },
 ];

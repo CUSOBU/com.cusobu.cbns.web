@@ -16,7 +16,7 @@ import Menu from "@mui/material/Menu";
 import { setAnchorElUser, toggleSideBar } from "../redux/states/app.state";
 import { navigation } from "../settings";
 
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["Account", "Logout"];
 
 const drawerWidth = 240;
 

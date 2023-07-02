@@ -1,4 +1,6 @@
 import { lazy } from "react";
+import { Navigate } from "react-router-dom";
+
 
 // project import
 import { Loadable } from "../components";
@@ -6,7 +8,6 @@ import { AuthLayout } from "../layouts";
 
 // render - login
 const AuthLogin = Loadable(lazy(() => import("../modules/SignIn")));
-const AuthRegister = Loadable(lazy(() => import("../modules/SignUp")));
 
 // ==============================|| AUTH ROUTING ||============================== //
 
@@ -15,14 +16,18 @@ const AuthRoutes = {
   element: <AuthLayout />,
   children: [
     {
+      path: "/",
+      element: <Navigate to="login" />,
+    },
+    {
       path: "login",
       element: <AuthLogin />,
     },
     {
-      path: "register",
-      element: <AuthRegister />,
-    },
-  ],
+      path: "*",
+      element: <Navigate to="/login" replace />,
+    }
+  ]
 };
 
 export default AuthRoutes;
