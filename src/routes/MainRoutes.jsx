@@ -6,9 +6,9 @@ import { MainLayout } from "../layouts";
 
 // render - dashboard
 const ManageTableDefault = Loadable(lazy(() => import("../modules/ManageTable")));
-const RemittancesDefault = Loadable(lazy(() => import("../modules/Remittances")));
-const RemittancesSuccess = Loadable(lazy(() => import("../modules/Remittances/index_succes")));
-const RemittancesFail = Loadable(lazy(() => import("../modules/Remittances/index_fail")));
+const RemittancesDefault = Loadable(lazy(() => import("../modules/Remittances/Processing")));
+const RemittancesSuccess = Loadable(lazy(() => import("../modules/Remittances/Completed")));
+const RemittancesFail = Loadable(lazy(() => import("../modules/Remittances/Fails")));
 
 // ==============================|| MAIN ROUTING ||============================== //
 

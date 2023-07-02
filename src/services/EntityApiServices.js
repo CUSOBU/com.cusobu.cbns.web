@@ -1,5 +1,5 @@
 import axios from "axios";
-import  utils from "../utils/env";
+import utils from "../utils/env";
 
 class API {
   constructor(baseURL, token) {
@@ -7,7 +7,7 @@ class API {
       baseURL: baseURL,
       headers: {
         "Content-Type": "application/json",
-        ...(token && { Authorization: token}),
+        ...(token && { Authorization: token }),
       },
     });
   }
@@ -53,10 +53,11 @@ class API {
     throw error;
   }
 }
+export const publicAPI = new API(utils.api_url); // eslint-disable-line
 
-export const publicAPI = new API("utils.api_url");
-
-export const authAPI = new API(utils.api_url, localStorage.getItem("token")||"");
+export const authAPI = new API(
+  utils.api_url, // eslint-disable-line
+  localStorage.getItem("token") || ""
+);
 
 export default API;
-

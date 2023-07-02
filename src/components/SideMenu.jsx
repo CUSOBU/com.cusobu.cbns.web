@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import { useNavigate } from "react-router-dom";
 import { List } from "@mui/material";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -7,9 +8,7 @@ import ListSubheader from "@mui/material/ListSubheader";
 import { navigation } from "../settings";
 
 const SideMenu = ({ open = false }) => {
-  const navigateTo = (link) => {
-    link && console.log(link);
-  };
+  const navigateTo = useNavigate();
 
   return (
     <List component="nav">
@@ -27,7 +26,7 @@ const SideMenu = ({ open = false }) => {
         }
 
         return (
-          <ListItemButton key={index} onClick={() => navigateTo(link)}>
+          <ListItemButton key={index} onClick={() => link && navigateTo(link)}>
             <ListItemIcon>{icon}</ListItemIcon>
             <ListItemText primary={title} />
           </ListItemButton>

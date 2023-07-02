@@ -19,19 +19,19 @@ export const navigation = [
   {
     title: "Procesando",
     exact: false,
-    link: `${env.url}/remittances`,
+    link: `/remittances`,
     icon: <AutorenewIcon/>,
   },
   {
     title: "Completadas",
     exact: false,
-    link: `${env.url}/remittances_completed`,
+    link: `/remittances_completed`,
     icon: <DoneAllIcon />,
   },
   {
     title: "Fallidas",
     exact: false,
-    link: `${env.url}/remittances_fails`,
+    link: `/remittances_fails`,
     icon: <SmsFailedIcon />,
   },
 ];
