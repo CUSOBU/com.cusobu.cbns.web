@@ -3,10 +3,16 @@ import PropTypes from "prop-types";
 import { authAPI } from "../../../services/EntityApiServices";
 import Table from "../../../components/Table";
 import { useColumnsByRole } from "../hooks/columnsByRole";
+import ActionCell from "./ActionCell";
 
-const DataTable = ({ status, startDate, endDate }) => {
+
+const DataTable = ({ status, startDate, endDate, actions }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+
+  const removeRow = (identifier) => {
+    setData(data => data.filter(row => row.identifier !== identifier));
+  };
 
   const fetchData = async () => {
     try {
@@ -26,18 +32,27 @@ const DataTable = ({ status, startDate, endDate }) => {
     }
   };
 
-  const getColumns = useColumnsByRole(
-    sessionStorage.getItem("roles") || "provider"
+  let getColumns = useColumnsByRole(
+    sessionStorage.getItem("roles") || "provider",
+    actions
   );
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [startDate, endDate, status]);
 
   return (
     <Table
       data={data}
-      columns={getColumns}
+      columns={getColumns.map(column => {
+        if (column.field === 'Actions') {
+          return {
+            ...column,
+            renderCell: (params) => <ActionCell row={params.row} removeRow={removeRow} />
+          };
+        }
+        return column;
+      })}
       loading={loading || false}
       page={0}
       pageSize={20}
@@ -50,6 +65,7 @@ DataTable.propTypes = {
   status: PropTypes.array.isRequired,
   startDate: PropTypes.string,
   endDate: PropTypes.string,
+  actions: PropTypes.bool,
 };
 
 export default DataTable;

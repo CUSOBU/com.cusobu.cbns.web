@@ -9,7 +9,6 @@ import MainRoutes from "./MainRoutes";
 
 export default function ThemeRoutes() {
   const { isAuth } = useSelector((state) => state.session);
-  console.log(isAuth);
   let routes = isAuth ? MainRoutes : LoginRoutes;
 
   return useRoutes([routes]);

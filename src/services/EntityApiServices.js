@@ -30,6 +30,16 @@ class API {
     }
   }
 
+  async patch(url, data) {
+    console.log("patch", url, data);
+    try {
+      const response = await this.client.post(url, data);
+      return response.data;
+    } catch (error) {
+      throw this.handleError(error);
+    }
+  }
+
   async put(url, data) {
     try {
       const response = await this.client.put(url, data);

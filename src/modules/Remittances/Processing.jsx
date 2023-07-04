@@ -1,12 +1,31 @@
+import { DateRangePicker } from "../../components";
 import DataTable from "./components/DataTable";
+import Grid from "@mui/material/Grid";
+import { useState } from "react";
+
 
 const Processing = () => {
+
+  const [dateRange, setDateRange] = useState({ startDate: null, endDate: null });
+
   return (
-    <DataTable
-      status={["Pending", "Delivery"]}
-      startDate="2023-06-20"
-      endDate="2023-12-29"
-    />
+    <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+      <Grid item xs={12}>
+        <DateRangePicker 
+          startDate={dateRange.startDate}
+          endDate={dateRange.endDate}
+          onDateChange={setDateRange}
+        />
+      </Grid>
+      <Grid item xs={12}>
+        <DataTable
+          status={["Pending", "Delivery"]}
+          startDate={dateRange.startDate}
+          endDate={dateRange.endDate}
+          actions={true}
+        />
+      </Grid>
+    </Grid>
   );
 };
 
