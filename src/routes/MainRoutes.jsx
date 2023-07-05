@@ -5,7 +5,8 @@ import { Loadable } from "../components";
 import { MainLayout } from "../layouts";
 
 // render - dashboard
-const ManageTableDefault = Loadable(lazy(() => import("../modules/ManageTable")));
+
+const Dashboard = Loadable(lazy(() => import("../modules/Remittances/Dashboard")));
 const RemittancesDefault = Loadable(lazy(() => import("../modules/Remittances/Processing")));
 const RemittancesSuccess = Loadable(lazy(() => import("../modules/Remittances/Completed")));
 const RemittancesFail = Loadable(lazy(() => import("../modules/Remittances/Fails")));
@@ -18,7 +19,7 @@ const MainRoutes = {
   children: [
     {
       path: "/",
-      element: <ManageTableDefault />,
+      element: <Dashboard />,
     },{
       path: "/remittances",
       element: <RemittancesDefault />,
