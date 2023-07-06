@@ -4,7 +4,8 @@ import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { Copyright, Navbar, SideBar } from "../components";
 import { DetailsContextProvider } from "../modules/Remittances/contexts/DetailsContext";
-import Details from "../modules/Remittances/components/Details";
+import DetailRemittance from "../modules/Remittances/components/Details";
+import CreateRemittance from "../modules/Remittances/components/DialogCreate";
 
 export default function MainLayout() {
   return (
@@ -27,7 +28,8 @@ export default function MainLayout() {
         <Toolbar />
         <Grid container p={4}>
           <DetailsContextProvider>
-            <Details />
+            <DetailRemittance />
+            <CreateRemittance />
             <Outlet />
           </DetailsContextProvider>
         </Grid>
