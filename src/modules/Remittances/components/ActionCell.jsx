@@ -42,26 +42,30 @@ const ActionCell = ({ row }) => {
           <InfoIcon fontSize="inherit" />
         </IconButton>
       </Tooltip>
-      <Tooltip title="Confirm">
-        <IconButton
-          color="secondary"
-          aria-label="Confirm"
-          size="small"
-          onClick={handleOpenConfirm}
-        >
-          <CheckCircleIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
-      <Tooltip title="Cancel">
-        <IconButton
-          color="error"
-          aria-label="Cancel"
-          size="small"
-          onClick={handleOpenCancel}
-        >
-          <CancelIcon fontSize="inherit" />
-        </IconButton>
-      </Tooltip>
+      {row.status === "Pending" && (
+        <>
+          <Tooltip title="Confirm">
+            <IconButton
+              color="secondary"
+              aria-label="Confirm"
+              size="small"
+              onClick={handleOpenConfirm}
+            >
+              <CheckCircleIcon fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Cancel">
+            <IconButton
+              color="error"
+              aria-label="Cancel"
+              size="small"
+              onClick={handleOpenCancel}
+            >
+              <CancelIcon fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
+        </>
+      )}
     </Stack>
   );
 };
