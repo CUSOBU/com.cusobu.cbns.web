@@ -26,8 +26,12 @@ const SideMenu = ({ open = false }) => {
         }
 
         return (
-          <ListItemButton key={index} onClick={() => link && navigateTo(link)}>
-            <ListItemIcon>{icon}</ListItemIcon>
+          <ListItemButton
+            key={index}
+            onClick={() => link && navigateTo(link)}
+            disablePadding
+          >
+            <ListItemIcon sx={{ minWidth: "40px" }}>{icon}</ListItemIcon>
             <ListItemText primary={title} />
           </ListItemButton>
         );

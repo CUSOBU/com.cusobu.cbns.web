@@ -18,7 +18,7 @@ import { navigation } from "../settings";
 
 const settings = ["Account", "Logout"];
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== "open",

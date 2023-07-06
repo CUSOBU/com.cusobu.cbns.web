@@ -7,7 +7,7 @@ import logo from "../assets/react.svg";
 
 import SideMenu from "./SideMenu";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
@@ -60,7 +60,7 @@ const SideBar = () => {
             display: open ? "relative" : "none",
             top: "16px",
             position: "fixed",
-            left: "222px",
+            left: "182px",
             border: "1px dashed rgba(0, 0, 0, 0.12)",
             padding: "4px",
             zIndex: '20000'

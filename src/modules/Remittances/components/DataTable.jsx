@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { authAPI } from "../../../services/EntityApiServices";
+import API from "../../../services/EntityApiServices";
+import utils from "../../../utils/env";
 import Table from "../../../components/Table";
 import { useColumnsByRole } from "../hooks/columnsByRole";
 import ActionCell from "./ActionCell";
@@ -13,6 +14,11 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
   const removeRow = (identifier) => {
     setData(data => data.filter(row => row.identifier !== identifier));
   };
+
+  const authAPI = new API(
+    utils.api_url, // eslint-disable-line
+    localStorage.getItem("token") || ""
+  );
 
   const fetchData = async () => {
     try {

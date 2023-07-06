@@ -3,6 +3,8 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { Copyright, Navbar, SideBar } from "../components";
+import { DetailsContextProvider } from "../modules/Remittances/contexts/DetailsContext";
+import Details from "../modules/Remittances/components/Details";
 
 export default function MainLayout() {
   return (
@@ -24,7 +26,10 @@ export default function MainLayout() {
       >
         <Toolbar />
         <Grid container p={4}>
-          <Outlet />
+          <DetailsContextProvider>
+            <Details />
+            <Outlet />
+          </DetailsContextProvider>
         </Grid>
         <Copyright sx={{ mt: "auto", mb: "8px" }} />
       </Box>
