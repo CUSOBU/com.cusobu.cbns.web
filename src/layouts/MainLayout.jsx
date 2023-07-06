@@ -6,6 +6,8 @@ import { Copyright, Navbar, SideBar } from "../components";
 import { DetailsContextProvider } from "../modules/Remittances/contexts/DetailsContext";
 import DetailRemittance from "../modules/Remittances/components/Details";
 import CreateRemittance from "../modules/Remittances/components/DialogCreate";
+import DialogConfirmCancel from "../modules/Remittances/components/DialogConfirmCancel";
+import DialogConfirmConfirm from "../modules/Remittances/components/DialogConfirmConfirm";
 
 export default function MainLayout() {
   return (
@@ -30,6 +32,8 @@ export default function MainLayout() {
           <DetailsContextProvider>
             <DetailRemittance />
             <CreateRemittance />
+            <DialogConfirmCancel />
+            <DialogConfirmConfirm />
             <Outlet />
           </DetailsContextProvider>
         </Grid>

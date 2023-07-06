@@ -29,7 +29,6 @@ const SideMenu = ({ open = false }) => {
           <ListItemButton
             key={index}
             onClick={() => link && navigateTo(link)}
-            disablePadding
           >
             <ListItemIcon sx={{ minWidth: "40px" }}>{icon}</ListItemIcon>
             <ListItemText primary={title} />

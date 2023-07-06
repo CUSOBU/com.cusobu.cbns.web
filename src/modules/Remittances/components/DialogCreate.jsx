@@ -1,16 +1,19 @@
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { Button, Grid, TextField, InputAdornment } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-//import DialogContentText from "@mui/material/DialogContentText";
-import { useForm } from "react-hook-form";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useDetailsContext } from "../contexts/DetailsContext";
 import { DIALOG_NAMESPACE } from "../constants/create";
-import { useEffect } from "react";
+import API from "../../../services/EntityApiServices";
+import utils from "../../../utils/env";
 
 export default function FormDialog() {
   const { closeDialog, isOpen } = useDetailsContext(DIALOG_NAMESPACE);
+
+  const authAPI = new API(utils.api_url, localStorage.getItem("token") || "");
 
   const {
     register,
@@ -24,7 +27,13 @@ export default function FormDialog() {
   }, [isOpen]);
 
   const onSubmit = async (formData) => {
-    console.log({ formData });
+    const data = { provider: JSON.parse(localStorage.user), ...formData };
+    await authAPI
+      .post("/remittances", data)
+      .then(closeDialog)
+      .catch((errors) => {
+        console.log({ errors });
+      });
   };
 
   return (
@@ -92,8 +101,7 @@ export default function FormDialog() {
                 sx={{ mb: 1 }}
                 {...register("cardNumber", {
                   required: "Este campo es requerido",
-                  min: { value: 16, message: "Mínimo de valor cero" },
-                  max: { value: 16, message: "Mínimo de valor cero" },
+                  min: { value: 12, message: "Mínimo de valor 12" },
                 })}
                 error={!!errors.cardNumber}
                 helperText={errors.cardNumber?.message}
@@ -214,10 +222,10 @@ export default function FormDialog() {
                 helperText={errors.source_reference?.message}
               />
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12}>
               <TextField
                 label="Details"
-                type="number"
+                type="text"
                 variant="filled"
                 fullWidth
                 sx={{ mb: 1 }}
@@ -227,21 +235,6 @@ export default function FormDialog() {
                 })}
                 error={!!errors.details}
                 helperText={errors.details?.message}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Provider"
-                type="number"
-                variant="filled"
-                fullWidth
-                sx={{ mb: 1 }}
-                {...register("provider", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.provider}
-                helperText={errors.provider?.message}
               />
             </Grid>
           </Grid>

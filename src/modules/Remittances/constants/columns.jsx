@@ -1,4 +1,6 @@
-import ActionCell from "../components/ActionCell";
+import { renderRemittenceActions } from "../components/ActionCell";
+export const DIALOG_NAMESPACE_CANCEL = "CANCEL_REMITTANCES";
+export const DIALOG_NAMESPACE_CONFIRM = "CONFIRM_REMITTANCES";
 
 export default [
   {
@@ -68,7 +70,7 @@ export default [
     headerName: "Acciones",
     type: "actions",
     width: 120,
-    renderCell: ActionCell, // Prevents row selection on click
+    renderCell: renderRemittenceActions, // Prevents row selection on click
     roles: ["seller"],
   },
 ];
