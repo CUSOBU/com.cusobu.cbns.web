@@ -16,7 +16,7 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
   };
 
   const authAPI = new API(
-    utils.api_url, // eslint-disable-line
+    utils.api_url,
     localStorage.getItem("token") || ""
   );
 
