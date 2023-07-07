@@ -29,14 +29,16 @@ const Processing = () => {
           endDate={dateRange.endDate}
           onDateChange={setDateRange}
         />
-        <Button
-          variant="contained"
-          size="small"
-          startIcon={<AddIcon />}
-          onClick={openDialog}
-        >
-          Create
-        </Button>
+        {sessionStorage.getItem("roles") === "seller" && (
+          <Button
+            variant="contained"
+            size="small"
+            startIcon={<AddIcon />}
+            onClick={openDialog}
+          >
+            Create
+          </Button>
+        )}
       </Grid>
       <Grid item xs={12}>
         <DataTable

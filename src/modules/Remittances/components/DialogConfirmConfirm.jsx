@@ -21,8 +21,8 @@ export default function ConfirmDialog() {
 
   const onConfirm = () => {
     //Submit to confirm
-    console.log(`Se confirma el elemento ${payload?.id}`);
-    authAPI.patch(`/remittances/setstatus/${payload?.id}`, {
+    console.log(`Se confirma el elemento ${payload}`);
+    authAPI.patch(`/remittances/setstatus/${payload?.identifier}`, {
       status: "Complete",
       statusCode: 3,
       provider: sessionStorage.user,

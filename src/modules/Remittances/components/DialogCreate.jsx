@@ -1,10 +1,16 @@
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import { useState } from "react";
 import { Button, Grid, TextField, InputAdornment } from "@mui/material";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+
 import { useDetailsContext } from "../contexts/DetailsContext";
 import { DIALOG_NAMESPACE } from "../constants/create";
 import API from "../../../services/EntityApiServices";
@@ -12,8 +18,21 @@ import utils from "../../../utils/env";
 
 export default function FormDialog() {
   const { closeDialog, isOpen } = useDetailsContext(DIALOG_NAMESPACE);
+  // const {budgetCurrency, setBudgetCurrency} = useState("CUP");
+  const [remittanceCurrency, setRemittanceCurrency] = useState("MLC");
+  const [budgetCurrency, setBudgetCurrency] = useState("USD");
+  const [remittanceAmount, setRemittanceAmount] = useState(0);
+  const [operationCost, setOperationCost] = useState(0);
+  const [budgetAmount, setBudgetAmount] = useState(110);
 
-  const authAPI = new API(utils.api_url, localStorage.getItem("token") || "");
+  useEffect(() => {
+    calculateRemittanceAmount(remittanceCurrency, budgetAmount, budgetCurrency);
+  }, [remittanceCurrency, budgetCurrency, remittanceAmount, budgetAmount]);
+
+  const authAPI = new API(
+    utils.api_url, // eslint-disable-line
+    localStorage.getItem("token") || ""
+  );
 
   const {
     register,
@@ -27,7 +46,9 @@ export default function FormDialog() {
   }, [isOpen]);
 
   const onSubmit = async (formData) => {
-    const data = { provider: JSON.parse(localStorage.user), ...formData };
+    
+    const data = { 
+      ...formData };
     await authAPI
       .post("/remittances", data)
       .then(closeDialog)
@@ -36,36 +57,50 @@ export default function FormDialog() {
       });
   };
 
+  const calculateRemittanceAmount = async (
+    remmitance_currency,
+    budget,
+    budget_currency
+  ) => {
+    if (budget > 0) {
+      const data = await authAPI.post("/remittances/pricing", {
+        remmitance_currency,
+        budget,
+        budget_currency,
+      });
+      setRemittanceAmount(data.remittance_prices.remittance_amount);
+      setOperationCost(data.remittance_prices.operation_cost);
+      // console.log("Proces", data);
+    }
+  };
+
   return (
     <Dialog open={isOpen} onClose={closeDialog} maxWidth="md">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>Create Remittance</DialogTitle>
+        <DialogTitle>Enviar Remesa</DialogTitle>
         <DialogContent>
           <Grid
             container
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-            <Grid item xs={6}>
-              <TextField
-                label="Email"
-                variant="filled"
-                fullWidth
-                sx={{ mb: 1 }}
-                {...register("email", {
-                  required: "Este campo es requerido",
-                  pattern: {
-                    value: /\S+@\S+\.\S+/,
-                    message: "Entered value does not match email format",
-                  },
-                })}
-                error={!!errors.email}
-                helperText={errors.email?.message}
-              />
+           <Grid container sx={{ my: 2 }}>
+              <Grid item xs={1}>
+                <Divider sx={{ my: 2 }} />
+              </Grid>
+              <Grid item xs={1} sx={{ my: "auto" }}>
+                <Typography align="center" variant="body2">
+                  Generales
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <Divider sx={{ my: 2 }} />
+              </Grid>
             </Grid>
+
             <Grid item xs={6}>
               <TextField
-                label="Full name"
+                label="Nombre completo"
                 variant="filled"
                 fullWidth
                 sx={{ mb: 1 }}
@@ -79,7 +114,7 @@ export default function FormDialog() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Phone number"
+                label="Teléfonos"
                 type="number"
                 variant="filled"
                 fullWidth
@@ -94,7 +129,7 @@ export default function FormDialog() {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Card number"
+                label="Tarjeta"
                 type="number"
                 variant="filled"
                 fullWidth
@@ -107,52 +142,47 @@ export default function FormDialog() {
                 helperText={errors.cardNumber?.message}
               />
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Remittance amount"
-                type="number"
+
+            <Grid container sx={{ my: 2 }}>
+              <Grid item xs={1}>
+                <Divider sx={{ my: 2 }} />
+              </Grid>
+              <Grid item xs={1} sx={{ my: "auto" }}>
+                <Typography align="center" variant="body2">
+                  Remesa
+                </Typography>
+              </Grid>
+              <Grid item xs={10}>
+                <Divider sx={{ my: 2 }} />
+              </Grid>
+            </Grid>
+
+            <Grid item xs={2}>
+              <Select
+                label="Moneda"
                 variant="filled"
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
+                value={budgetCurrency}
                 fullWidth
-                sx={{ mb: 1 }}
-                {...register("remittance_amount", {
+                {...register("budget_currency", {
                   required: "Este campo es requerido",
                   min: { value: 0, message: "Mínimo de valor cero" },
                 })}
-                error={!!errors.remittance_amount}
-                helperText={errors.remittance_amount?.message}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Remittance currency"
-                type="number"
-                variant="filled"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
+                error={!!errors.budget_currency}
+                onChange={(event) => {
+                  setBudgetCurrency(event.target.value);
                 }}
-                sx={{ mb: 1 }}
-                {...register("remittance_currency", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.remittance_currency}
-                helperText={errors.remittance_currency?.message}
-              />
+              >
+                <MenuItem value={"USD"}>USD</MenuItem>
+                <MenuItem value={"UYU"}>UYU</MenuItem>
+              </Select>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={4}>
               <TextField
-                label="Budget amount"
+                label="Precio (Enviar)"
                 type="number"
                 variant="filled"
                 fullWidth
+                value={budgetAmount}
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
@@ -165,76 +195,49 @@ export default function FormDialog() {
                 })}
                 error={!!errors.budget_amount}
                 helperText={errors.budget_amount?.message}
+                onChange={(event) => {
+                  setBudgetAmount(event.target.value);
+                }}
               />
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Budget currency"
-                type="number"
+            <Grid item xs={2}>
+              <Select
+                label="Moneda"
                 variant="filled"
+                value={remittanceCurrency}
                 fullWidth
+                {...register("remittance_currency", {
+                  required: "Este campo es requerido",
+                  min: { value: 0, message: "Mínimo de valor cero" },
+                })}
+                error={!!errors.remittance_currency}
+                onChange={(event) => {
+                  setRemittanceCurrency(event.target.value);
+                }}
+              >
+                <MenuItem value={"MLC"}>MLC</MenuItem>
+                <MenuItem value={"CUP"}>CUP</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={4}>
+              <TextField
+                label="Monto (Recibe)"
+                type="number"
+                value={remittanceAmount}
+                variant="filled"
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">$</InputAdornment>
                   ),
                 }}
-                sx={{ mb: 1 }}
-                {...register("budget_currency", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.budget_currency}
-                helperText={errors.budget_currency?.message}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="operation cost"
-                type="number"
-                variant="filled"
-                fullWidth
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-                sx={{ mb: 1 }}
-                {...register("operation_cost", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.operation_cost}
-                helperText={errors.operation_cost?.message}
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Source reference"
-                type="number"
-                variant="filled"
                 fullWidth
                 sx={{ mb: 1 }}
-                {...register("source_reference", {
-                  required: "Este campo es requerido",
+                {...register("remittance_amount", {
                   min: { value: 0, message: "Mínimo de valor cero" },
                 })}
-                error={!!errors.source_reference}
-                helperText={errors.source_reference?.message}
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                label="Details"
-                type="text"
-                variant="filled"
-                fullWidth
-                sx={{ mb: 1 }}
-                {...register("details", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.details}
-                helperText={errors.details?.message}
+                error={!!errors.remittance_amount}
+                helperText={errors.remittance_amount?.message}
+                disabled
               />
             </Grid>
           </Grid>

@@ -10,7 +10,7 @@ export default [
     flex: 1,
   },
   {
-    field: "identifier",
+    field: "identifier",                                     
     headerName: "Id",
     width: 70,
   },
@@ -71,7 +71,7 @@ export default [
     type: "actions",
     width: 120,
     renderCell: renderRemittenceActions, // Prevents row selection on click
-    roles: ["seller"],
+    roles: ["provider"],
   },
 ];
 

@@ -21,9 +21,9 @@ export default function ConfirmDialog() {
 
   const onCancel = () => {
     //Submit to cancel
-    console.log(`Se elimina el elemento ${payload?.id}`);
+    console.log(`Se elimina el elemento ${payload?.identifier}`);
 
-    authAPI.patch(`/remittances/setstatus/${payload?.id}`, {
+    authAPI.patch(`/remittances/setstatus/${payload?.identifier}`, {
       status: "Cancel",
       statusCode: 4,
       provider: sessionStorage.user,

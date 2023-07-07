@@ -28,6 +28,7 @@ const Completed = () => {
           endDate={dateRange.endDate}
           onDateChange={setDateRange}
         />
+        {sessionStorage.getItem("roles") === "seller" && (
         <Button
           variant="contained"
           size="small"
@@ -35,7 +36,7 @@ const Completed = () => {
           onClick={openDialog}
         >
           Create
-        </Button>
+        </Button>)}
       </Grid>
       <Grid item xs={12}>
         <DataTable

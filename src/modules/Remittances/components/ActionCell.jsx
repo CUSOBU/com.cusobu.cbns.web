@@ -12,13 +12,15 @@ import {
   DIALOG_NAMESPACE_CONFIRM,
 } from "../constants/columns";
 
+
 // Definir el componente ActionCell
-const ActionCell = ({ row }) => {
+const ActionCell = ({ row, roles }) => {
   const { openDialog: openDetails } = useDetailsContext(DIALOG_NAMESPACE);
   const { openDialog: openConfirm } = useDetailsContext(
     DIALOG_NAMESPACE_CONFIRM
   );
   const { openDialog: openCancel } = useDetailsContext(DIALOG_NAMESPACE_CANCEL);
+  roles = ["admin", "provider"];
 
   const handleOpenDetails = () => {
     openDetails(row);
@@ -42,7 +44,9 @@ const ActionCell = ({ row }) => {
           <InfoIcon fontSize="inherit" />
         </IconButton>
       </Tooltip>
-      {row.status === "Pending" && (
+      {
+      ((row.status === "Pending" || row.status === "Delivery"))  
+      && (roles.includes("provider")) &&  (
         <>
           <Tooltip title="Confirm">
             <IconButton
@@ -72,10 +76,11 @@ const ActionCell = ({ row }) => {
 
 ActionCell.propTypes = {
   row: PropTypes.object.isRequired,
+  roles: PropTypes.array
 };
 
 export default ActionCell;
 
 export const renderRemittenceActions = (row) => {
-  return <ActionCell row={row} />;
+  return <ActionCell row={row} roles={["admin", "provider"]} />;
 };
