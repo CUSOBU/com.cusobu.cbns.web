@@ -7,12 +7,13 @@ import logo from "../assets/react.svg";
 
 import SideMenu from "./SideMenu";
 
-const drawerWidth = 200;
+export const drawerWidth = 200;
 
 const Drawer = styled(MuiDrawer, {
   shouldForwardProp: (prop) => prop !== "open",
 })(({ theme, open }) => ({
   "& .MuiDrawer-paper": {
+    position: "relative",
     whiteSpace: "nowrap",
     width: drawerWidth,
     transition: theme.transitions.create("width", {
@@ -43,7 +44,7 @@ const SideBar = () => {
   };
 
   return (
-    <Drawer variant="permanent" open={open}>
+    <Drawer variant="permanent" open={open} height="100vh">
       <Toolbar
         sx={{
           display: "flex",
@@ -62,7 +63,7 @@ const SideBar = () => {
             left: "182px",
             border: "1px dashed rgba(0, 0, 0, 0.12)",
             padding: "4px",
-            zIndex: '20000'
+            zIndex: "20000",
           }}
         >
           <ChevronLeftIcon />

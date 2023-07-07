@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { Copyright, Navbar, SideBar } from "../components";
 import { DetailsContextProvider } from "../modules/Remittances/contexts/DetailsContext";
@@ -27,8 +26,7 @@ export default function MainLayout() {
           minHeight: "100vh",
         }}
       >
-        <Toolbar />
-        <Grid container p={4}>
+        <Grid container p={4} mt={8}>
           <DetailsContextProvider>
             <DetailRemittance />
             <CreateRemittance />
