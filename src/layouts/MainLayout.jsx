@@ -11,7 +11,6 @@ import DialogConfirmConfirm from "../modules/Remittances/components/DialogConfir
 export default function MainLayout() {
   return (
     <Box style={{ display: "flex" }}>
-      <Navbar />
       <SideBar />
       <Box
         component="main"
@@ -22,10 +21,12 @@ export default function MainLayout() {
               : theme.palette.grey[900],
           flexGrow: 1,
           display: "flex",
+          overflowY: "auto",
           flexDirection: "column",
-          minHeight: "100vh",
+          maxHeight: "100vh",
         }}
       >
+        <Navbar />
         <Grid container p={4} mt={8}>
           <DetailsContextProvider>
             <DetailRemittance />
