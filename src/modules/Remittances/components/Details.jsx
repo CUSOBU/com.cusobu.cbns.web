@@ -24,7 +24,7 @@ const Details = () => {
       anchor="right"
       open={isOpen}
       onClose={closeDialog}
-      sx={{ minWidth: "400px" }}
+      PaperProps={{ style: { minWidth: "400px" } }} 
     >
       {!!payload && payload.id ? (
         <>
@@ -35,13 +35,12 @@ const Details = () => {
             color="primary"
           >
             <Typography variant="h6" mx={2} height="40px">
-              Details
+              Detalles
             </Typography>
             <IconButton aria-label="close" onClick={closeDialog}>
               <CloseIcon />
             </IconButton>
           </Box>
-
           <Divider />
           <List>
             {fields?.map(
@@ -49,8 +48,7 @@ const Details = () => {
                 payload[field] && (
                   <ListItem key={field} dense sx={{ py: 0 }}>
                     <ListItemText
-                      primary={`${headerName}:`}
-                      secondary={payload[field]}
+                      primary={`${headerName}:`} secondary={payload[field]}
                     />
                   </ListItem>
                 )

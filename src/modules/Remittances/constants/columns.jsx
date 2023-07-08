@@ -69,7 +69,7 @@ export default [
     field: "Actions",
     headerName: "Acciones",
     type: "actions",
-    width: 120,
+    width: 150,
     renderCell: renderRemittenceActions, // Prevents row selection on click
     roles: ["provider"],
   },

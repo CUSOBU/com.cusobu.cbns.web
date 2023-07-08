@@ -2,17 +2,20 @@ import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useDetailsContext } from "../contexts/DetailsContext";
 import { DIALOG_NAMESPACE_CANCEL } from "../constants/columns";
 import API from "../../../services/EntityApiServices";
 import utils from "../../../utils/env";
+import TextField from "@mui/material/TextField";
+import { useState } from "react";
 
 export default function ConfirmDialog() {
   const { closeDialog, isOpen, payload } = useDetailsContext(
     DIALOG_NAMESPACE_CANCEL
   );
+
+  const [cancelReason, setCancelReason] = useState('');
 
   const authAPI = new API(
     utils.api_url,
@@ -22,13 +25,13 @@ export default function ConfirmDialog() {
   const onCancel = () => {
     //Submit to cancel
     console.log(`Se elimina el elemento ${payload?.identifier}`);
-
     authAPI.patch(`/remittances/setstatus/${payload?.identifier}`, {
       status: "Cancel",
       statusCode: 4,
       provider: sessionStorage.user,
-      evidence: "comment",
+      evidence: cancelReason,
     });
+    closeDialog();
   };
 
   return (
@@ -38,16 +41,20 @@ export default function ConfirmDialog() {
       aria-labelledby="alert-dialog-title"
       aria-describedby="alert-dialog-description"
     >
-      <DialogTitle id="alert-dialog-title">Confirmar Cancelación</DialogTitle>
+      <DialogTitle id="alert-dialog-title">Cancelar remesa</DialogTitle>
       <DialogContent>
-        <DialogContentText id="alert-dialog-description">
-          Estas seguro que deseas cancelar la remitancia.
-        </DialogContentText>
+      <TextField
+          autoFocus
+          label="Motivo de cancelación"
+          value={cancelReason}
+          onChange={(e) => setCancelReason(e.target.value)}
+          fullWidth
+        />
       </DialogContent>
       <DialogActions>
         <Button onClick={closeDialog}>Cancelar</Button>
         <Button onClick={onCancel} autoFocus>
-          Cancelar
+          Confirmar
         </Button>
       </DialogActions>
     </Dialog>

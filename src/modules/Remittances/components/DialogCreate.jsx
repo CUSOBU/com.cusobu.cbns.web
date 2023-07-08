@@ -15,6 +15,7 @@ import { useDetailsContext } from "../contexts/DetailsContext";
 import { DIALOG_NAMESPACE } from "../constants/create";
 import API from "../../../services/EntityApiServices";
 import utils from "../../../utils/env";
+import CircularProgress from "@mui/material/CircularProgress";
 
 export default function FormDialog() {
   const { closeDialog, isOpen } = useDetailsContext(DIALOG_NAMESPACE);
@@ -28,6 +29,8 @@ export default function FormDialog() {
   useEffect(() => {
     calculateRemittanceAmount(remittanceCurrency, budgetAmount, budgetCurrency);
   }, [remittanceCurrency, budgetCurrency, remittanceAmount, budgetAmount]);
+
+  const [isLoading, setIsLoading] = useState(false);
 
   const authAPI = new API(
     utils.api_url, // eslint-disable-line
@@ -46,14 +49,18 @@ export default function FormDialog() {
   }, [isOpen]);
 
   const onSubmit = async (formData) => {
-    
-    const data = { 
-      ...formData };
+    setIsLoading(true);
+    const data = {
+      ...formData,
+    };
     await authAPI
       .post("/remittances", data)
       .then(closeDialog)
       .catch((errors) => {
         console.log({ errors });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   };
 
@@ -84,7 +91,7 @@ export default function FormDialog() {
             rowSpacing={1}
             columnSpacing={{ xs: 1, sm: 2, md: 3 }}
           >
-           <Grid container sx={{ my: 2 }}>
+            <Grid container sx={{ my: 2 }}>
               <Grid item xs={1}>
                 <Divider sx={{ my: 2 }} />
               </Grid>
@@ -243,8 +250,10 @@ export default function FormDialog() {
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog}>Cancel</Button>
-          <Button type="submit">Create</Button>
+          <Button onClick={closeDialog} disabled={isLoading}>Cancel</Button>
+          <Button type="submit" disabled={isLoading}>
+            {isLoading ? <CircularProgress size={24} /> : "Create"}
+          </Button>
         </DialogActions>
       </form>
     </Dialog>
