@@ -31,7 +31,7 @@ const PickerComponent = ({ onDateChange }) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Grid display="flex" sx={{ mx: 3, my: "auto" }}>
+      <Grid display="flex" sx={{ mx: 3, my: "auto" }} maxWidth="lg">
         <DatePicker
           label="Desde"
           value={startDate}
