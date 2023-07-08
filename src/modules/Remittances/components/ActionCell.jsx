@@ -11,16 +11,17 @@ import {
   DIALOG_NAMESPACE_CANCEL,
   DIALOG_NAMESPACE_CONFIRM,
 } from "../constants/columns";
+import { useMemo } from "react";
 
 
 // Definir el componente ActionCell
-const ActionCell = ({ row, roles }) => {
+const ActionCell = ({ row, }) => {
   const { openDialog: openDetails } = useDetailsContext(DIALOG_NAMESPACE);
   const { openDialog: openConfirm } = useDetailsContext(
     DIALOG_NAMESPACE_CONFIRM
   );
   const { openDialog: openCancel } = useDetailsContext(DIALOG_NAMESPACE_CANCEL);
-  roles = ["admin", "provider"];
+  const roles = useMemo(() => sessionStorage.getItem("roles"), [sessionStorage.getItem("roles")]);
 
   const handleOpenDetails = () => {
     openDetails(row);
@@ -38,34 +39,33 @@ const ActionCell = ({ row, roles }) => {
       <Tooltip title="Details">
         <IconButton
           aria-label="Details"
-          size="small"
+          size="large"
           onClick={handleOpenDetails}
         >
           <InfoIcon fontSize="inherit" />
         </IconButton>
       </Tooltip>
       {
-      ((row.status === "Pending" || row.status === "Delivery"))  
-      && (roles.includes("provider")) &&  (
+      (row.status === "Pending" || row.status === "Delivery") && (roles==="provider") && (
         <>
+        <Tooltip title="Cancel">
+            <IconButton
+              color="error"
+              aria-label="Cancel"
+              size="large"
+              onClick={handleOpenCancel}
+            >
+              <CancelIcon fontSize="inherit" />
+            </IconButton>
+          </Tooltip>
           <Tooltip title="Confirm">
             <IconButton
               color="secondary"
               aria-label="Confirm"
-              size="small"
+              size="large"
               onClick={handleOpenConfirm}
             >
               <CheckCircleIcon fontSize="inherit" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Cancel">
-            <IconButton
-              color="error"
-              aria-label="Cancel"
-              size="small"
-              onClick={handleOpenCancel}
-            >
-              <CancelIcon fontSize="inherit" />
             </IconButton>
           </Tooltip>
         </>
@@ -75,12 +75,11 @@ const ActionCell = ({ row, roles }) => {
 };
 
 ActionCell.propTypes = {
-  row: PropTypes.object.isRequired,
-  roles: PropTypes.array
+  row: PropTypes.object.isRequired
 };
 
 export default ActionCell;
 
 export const renderRemittenceActions = (row) => {
-  return <ActionCell row={row} roles={["admin", "provider"]} />;
+  return <ActionCell row={row} />;
 };

@@ -1,13 +1,13 @@
 export const DIALOG_NAMESPACE = "DETAILS_REMITTANCES";
 export const fields = [
   {
+    field: "identifier",
+    headerName: "Id",
+  },
+  {
     field: "email",
     headerName: "Usuario",
     roles: ["admin"],
-  },
-  {
-    field: "identifier",
-    headerName: "Id",
   },
   {
     field: "full_name",
@@ -23,7 +23,7 @@ export const fields = [
   },
   {
     field: "remittance_amount",
-    headerName: "Remesa",
+    headerName: "Monto (Enviado)",
   },
   {
     field: "remittance_currency",
@@ -36,17 +36,26 @@ export const fields = [
   },
   {
     field: "operation_cost",
-    headerName: "Cobrado",
+    headerName: "Costo",
     roles: ["seller", "admin"],
   },
   {
     field: "budget_currency",
-    headerName: "Budget Currency",
+    headerName: "Moneda (Pago)",
     roles: ["seller", "admin"],
   },
   {
     field: "status",
     headerName: "Estado",
+  },
+  {
+    field: "statusCode",
+    headerName: "Código Estado",
+  },
+  {
+    field: "source_reference",
+    headerName: "Referencia",
+    roles: ["admin"],
   },
   {
     field: "createdAt",
@@ -55,8 +64,13 @@ export const fields = [
   {
     field: "provider",
     headerName: "Proveedor",
-    roles: ["admin", "provider", "seller"],
+    roles: ["admin", "provider"],
   },
+  {
+    field: "evidence",
+    headerName: "Evidencia",
+    roles: ["admin", "provider", "seller"],
+  }
 ];
 
 //roles: ["admin", "seller", "provider"],
