@@ -36,10 +36,10 @@ export const theme = (customization) => {
     palette: themePalette(themeOption),
     mixins: {
       toolbar: {
-        minHeight: "38px",
+        minHeight: "36px",
         padding: "4px",
         "@media (min-width: 600px)": {
-          minHeight: "38px",
+          minHeight: "36px",
         },
       },
       main: {
