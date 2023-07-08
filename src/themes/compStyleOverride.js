@@ -21,7 +21,7 @@ export default function componentStyleOverrides(theme) {
         },
       },
     },
-    /* MuiPaper: {
+    MuiPaper: {
       defaultProps: {
         elevation: 0,
       },
@@ -33,7 +33,7 @@ export default function componentStyleOverrides(theme) {
           borderRadius: `${theme?.customization?.borderRadius}px`,
         },
       },
-    }, */
+    },
     MuiCardHeader: {
       styleOverrides: {
         root: {
