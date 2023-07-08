@@ -8,19 +8,21 @@ const DashboardContext = createContext();
 function DashboardContextProvider(props) {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const authAPI = new API(utils.api_url, localStorage.getItem("token") || "");
 
   const fetchData = async () => {
     try {
-      let response = await authAPI.get(
-        `/remittances/filter?page=1&pageSize=20`,
+      const response = await authAPI.get(
+        `/remittances/filter?page=1&pageSize=20`
       );
 
       setData(response.remittances);
       setLoading(false);
     } catch (err) {
       setLoading(false);
+      setError(err);
     }
   };
 
@@ -28,7 +30,9 @@ function DashboardContextProvider(props) {
     fetchData();
   }, []);
 
-  return <DashboardContext.Provider value={{ ...data, loading }} {...props} />;
+  return (
+    <DashboardContext.Provider value={{ ...data, error, loading }} {...props} />
+  );
 }
 
 function useDashboardContext() {
@@ -41,13 +45,13 @@ function useDashboardContext() {
 
   try {
     return {
-      ...context
+      ...context,
     };
   } catch (e) {
     console.log(e);
     return {
       isLoading: false,
-      isError: true,
+      isError: !!context.error,
     };
   }
 }
