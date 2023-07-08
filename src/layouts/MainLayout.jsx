@@ -10,7 +10,7 @@ import DialogConfirmConfirm from "../modules/Remittances/components/DialogConfir
 
 export default function MainLayout() {
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box style={{ display: "flex" }}>
       <Navbar />
       <SideBar />
       <Box

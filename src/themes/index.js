@@ -42,7 +42,7 @@ export const theme = (customization) => {
           minHeight: "38px",
         },
       },
-      content: {
+      main: {
         flexGrow: 1,
         height: "100vh",
         overflow: "auto",
