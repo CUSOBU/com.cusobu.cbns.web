@@ -46,6 +46,7 @@ export default function ConfirmDialog() {
           value={comment}
           onChange={(e) => setComment(e.target.value)}
           fullWidth
+          sx={{margin: "10px 0"}}
         />
       </DialogContent>
       <DialogActions>

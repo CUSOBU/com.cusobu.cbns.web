@@ -49,6 +49,7 @@ export default function ConfirmDialog() {
           value={cancelReason}
           onChange={(e) => setCancelReason(e.target.value)}
           fullWidth
+          sx={{margin: "10px 0"}}
         />
       </DialogContent>
       <DialogActions>

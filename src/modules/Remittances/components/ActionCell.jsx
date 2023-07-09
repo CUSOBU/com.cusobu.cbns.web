@@ -13,15 +13,17 @@ import {
 } from "../constants/columns";
 import { useMemo } from "react";
 
-
 // Definir el componente ActionCell
-const ActionCell = ({ row, }) => {
+const ActionCell = ({ row }) => {
   const { openDialog: openDetails } = useDetailsContext(DIALOG_NAMESPACE);
   const { openDialog: openConfirm } = useDetailsContext(
     DIALOG_NAMESPACE_CONFIRM
   );
   const { openDialog: openCancel } = useDetailsContext(DIALOG_NAMESPACE_CANCEL);
-  const roles = useMemo(() => sessionStorage.getItem("roles"), [sessionStorage.getItem("roles")]);
+  const hasPermission = useMemo(() => {
+    const role = sessionStorage.getItem("roles").toString();
+    return role === "admin" || role === "provider";
+  }, [sessionStorage.getItem("roles")]);
 
   const handleOpenDetails = () => {
     openDetails(row);
@@ -41,41 +43,44 @@ const ActionCell = ({ row, }) => {
           aria-label="Details"
           size="large"
           onClick={handleOpenDetails}
+          sx={{ margin: 0, padding: 0 }}
         >
           <InfoIcon fontSize="inherit" />
         </IconButton>
       </Tooltip>
-      {
-      (row.status === "Pending" || row.status === "Delivery") && (roles==="provider") && (
-        <>
-        <Tooltip title="Cancel">
-            <IconButton
-              color="error"
-              aria-label="Cancel"
-              size="large"
-              onClick={handleOpenCancel}
-            >
-              <CancelIcon fontSize="inherit" />
-            </IconButton>
-          </Tooltip>
-          <Tooltip title="Confirm">
-            <IconButton
-              color="secondary"
-              aria-label="Confirm"
-              size="large"
-              onClick={handleOpenConfirm}
-            >
-              <CheckCircleIcon fontSize="inherit" />
-            </IconButton>
-          </Tooltip>
-        </>
-      )}
+      {(row.status === "Pending" || row.status === "Delivery") &&
+        !!hasPermission && (
+          <>
+            <Tooltip title="Cancel">
+              <IconButton
+                color="error"
+                aria-label="Cancel"
+                size="large"
+                onClick={handleOpenCancel}
+                sx={{ margin: 0, padding: 0 }}
+              >
+                <CancelIcon fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Confirm">
+              <IconButton
+                color="secondary"
+                aria-label="Confirm"
+                size="large"
+                sx={{ margin: 0, padding: 0 }}
+                onClick={handleOpenConfirm}
+              >
+                <CheckCircleIcon fontSize="inherit" />
+              </IconButton>
+            </Tooltip>
+          </>
+        )}
     </Stack>
   );
 };
 
 ActionCell.propTypes = {
-  row: PropTypes.object.isRequired
+  row: PropTypes.object.isRequired,
 };
 
 export default ActionCell;

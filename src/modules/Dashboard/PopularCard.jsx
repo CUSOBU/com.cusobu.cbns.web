@@ -29,7 +29,7 @@ const PopularCard = ({ isLoading }) => {
     { label: "Total", color: "secondary", percent: 15, value: 300 },
     { label: "Procesando", color: "info", percent: 10, value: 150 },
     { label: "Completadas", color: "success", percent: 8, value: 50 },
-    { label: "Fallidas", color: "error", percent: 40, value: 100 },
+    { label: "Fallidas", color: "error", percent: 40, value: 100, last: true },
   ];
 
   return (
@@ -65,7 +65,7 @@ const PopularCard = ({ isLoading }) => {
               <Grid item xs={12}>
                 <Grid container direction="column">
                   {data.map((el) => (
-                    <>
+                    <div key={el.label}>
                       <Grid container direction="column">
                         <Grid item>
                           <Grid
@@ -124,8 +124,8 @@ const PopularCard = ({ isLoading }) => {
                           </Typography>
                         </Grid>
                       </Grid>
-                      <Divider sx={{ my: 1.5 }} />
-                    </>
+                      {!el.last && <Divider sx={{ my: 1.5 }} />}
+                    </div>
                   ))}
                 </Grid>
               </Grid>

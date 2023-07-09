@@ -81,7 +81,7 @@ export default [
     type: "actions",
     width: 150,
     renderCell: renderRemittenceActions, // Prevents row selection on click
-    roles: ["provider"],
+    roles: ["provider", "admin"],
   },
 ];
 

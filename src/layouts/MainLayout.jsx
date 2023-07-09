@@ -23,7 +23,7 @@ export default function MainLayout() {
           display: "flex",
           overflowY: "auto",
           flexDirection: "column",
-          maxHeight: "100vh",
+          height: "100vh",
         }}
       >
         <Navbar />
