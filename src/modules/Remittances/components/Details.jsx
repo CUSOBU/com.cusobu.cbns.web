@@ -12,6 +12,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { useDetailsContext } from "../contexts/DetailsContext";
 import { DIALOG_NAMESPACE } from "../constants/details";
 import { useFieldsByRole } from "../hooks/detailsFieldsByRole";
+import { formatDate } from "../../../utils/format-date.util";
 
 const Details = () => {
   const { closeDialog, isOpen, payload } = useDetailsContext(DIALOG_NAMESPACE);
@@ -24,7 +25,7 @@ const Details = () => {
       anchor="right"
       open={isOpen}
       onClose={closeDialog}
-      PaperProps={{ style: { minWidth: "400px" } }} 
+      PaperProps={{ style: { minWidth: "400px" } }}
     >
       {!!payload && payload.id ? (
         <>
@@ -44,11 +45,16 @@ const Details = () => {
           <Divider />
           <List>
             {fields?.map(
-              ({ field, headerName }) =>
+              ({ field, headerName, type }) =>
                 payload[field] && (
                   <ListItem key={field} dense sx={{ py: 0 }}>
                     <ListItemText
-                      primary={`${headerName}:`} secondary={payload[field]}
+                      primary={`${headerName}:`}
+                      secondary={
+                        type === "date"
+                          ? formatDate(payload[field])
+                          : payload[field]
+                      }
                     />
                   </ListItem>
                 )

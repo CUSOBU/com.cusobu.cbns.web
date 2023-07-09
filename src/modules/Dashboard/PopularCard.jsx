@@ -47,7 +47,7 @@ const PopularCard = ({ isLoading }) => {
                   justifyContent="space-between"
                 >
                   <Grid item>
-                    <Typography variant="h4">Popular Stocks</Typography>
+                    <Typography variant="h4">Operaciones</Typography>
                   </Grid>
                   <Grid item display="flex" alignContent="center">
                     <Typography variant="h5" color="inherit" mr={1}>

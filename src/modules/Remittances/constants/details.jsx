@@ -60,6 +60,7 @@ export const fields = [
   {
     field: "createdAt",
     headerName: "Fecha",
+    type: "date",
   },
   {
     field: "provider",
@@ -70,7 +71,7 @@ export const fields = [
     field: "evidence",
     headerName: "Evidencia",
     roles: ["admin", "provider", "seller"],
-  }
+  },
 ];
 
 //roles: ["admin", "seller", "provider"],

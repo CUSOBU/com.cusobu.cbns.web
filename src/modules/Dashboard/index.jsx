@@ -10,6 +10,7 @@ import TotalOrderLineChartCard from './TotalOrderLineChartCard';
 import TotalIncomeDarkCard from './TotalIncomeDarkCard';
 import TotalIncomeLightCard from './TotalIncomeLightCard';
 import TotalGrowthBarChart from './TotalGrowthBarChart';
+import DailyBarChart from './DailyBarChart';
 
 // ==============================|| DEFAULT DASHBOARD ||============================== //
 
@@ -50,7 +51,7 @@ const Dashboard = () => {
       <Grid item xs={12}>
         <Grid container spacing={3}>
           <Grid item xs={12} md={8}>
-            <TotalGrowthBarChart isLoading={isLoading} />
+            <DailyBarChart isLoading={isLoading} />
           </Grid>
           <Grid item xs={12} md={4}>
             <PopularCard isLoading={isLoading} />
