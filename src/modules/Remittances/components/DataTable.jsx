@@ -11,10 +11,6 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
 
-  const removeRow = (identifier) => {
-    setData(data => data.filter(row => row.identifier !== identifier));
-  };
-
   const authAPI = new API(
     utils.api_url,
     localStorage.getItem("token") || ""
@@ -54,7 +50,7 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
         if (column.field === 'Actions') {
           return {
             ...column,
-            renderCell: (params) => <ActionCell row={params.row} removeRow={removeRow} />
+            renderCell: (params) => <ActionCell row={params.row} />
           };
         }
         return column;
