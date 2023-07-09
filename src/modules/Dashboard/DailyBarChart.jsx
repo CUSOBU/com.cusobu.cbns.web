@@ -14,9 +14,6 @@ import Chart from "react-apexcharts";
 import SkeletonTotalGrowthBarChart from "../../components/cards/Skeleton/TotalGrowthBarChart";
 import MainCard from "../../components/cards/MainCard";
 
-// chart data
-import chartData from "./chart-data/total-growth-bar-chart";
-
 const status = [
   {
     value: "today",

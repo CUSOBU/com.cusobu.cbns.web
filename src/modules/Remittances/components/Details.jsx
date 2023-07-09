@@ -35,7 +35,7 @@ const Details = () => {
             justifyContent="space-between"
             color="primary"
           >
-            <Typography variant="h6" mx={2} height="40px">
+            <Typography variant="h4" mx={2}>
               Detalles
             </Typography>
             <IconButton aria-label="close" onClick={closeDialog}>
