@@ -27,7 +27,7 @@ const chartData = {
       show: true,
       floating: true,
       position: "left",
-      offsetX: 85,
+      offsetX: 60,
       offsetY: 12,
       labels: { useSeriesColors: false },
       markers: { size: 0 },

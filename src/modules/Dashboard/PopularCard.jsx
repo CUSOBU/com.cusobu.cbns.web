@@ -16,6 +16,7 @@ import {
 import OperationsAreaChartCard from "./OperationsAreaChartCard";
 import MainCard from "../../components/cards/MainCard";
 import SkeletonPopularCard from "../../components/cards/Skeleton/PopularCard";
+import { useDashboardContext } from "./contexts/DashboardContext";
 
 // assets
 import ChevronRightOutlinedIcon from "@mui/icons-material/ChevronRightOutlined";
@@ -25,16 +26,38 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 
 const PopularCard = ({ isLoading }) => {
   const theme = useTheme();
+  const {
+    balanceData,
+    remittanceByStatus,
+    isLoading: dataLoading,
+  } = useDashboardContext();
   const data = [
-    { label: "Total", color: "secondary", percent: 15, value: 300 },
-    { label: "Procesando", color: "info", percent: 10, value: 150 },
-    { label: "Completadas", color: "success", percent: 8, value: 50 },
-    { label: "Fallidas", color: "error", percent: 40, value: 100, last: true },
+    {
+      label: "Total",
+      color: "secondary",
+      value: remittanceByStatus?.total ?? 0,
+    },
+    {
+      label: "Procesando",
+      color: "info",
+      value: remittanceByStatus?.processing ?? 0,
+    },
+    {
+      label: "Completadas",
+      color: "success",
+      value: remittanceByStatus?.complete ?? 0,
+    },
+    {
+      label: "Fallidas",
+      color: "error",
+      value: remittanceByStatus?.cancel ?? 0,
+      last: true,
+    },
   ];
 
   return (
     <>
-      {isLoading ? (
+      {isLoading || dataLoading ? (
         <SkeletonPopularCard />
       ) : (
         <MainCard content={false}>
@@ -54,13 +77,23 @@ const PopularCard = ({ isLoading }) => {
                       Total
                     </Typography>
                     <Typography variant="body1" color="inherit">
-                      2550
+                      {balanceData?.operational_limit}
                     </Typography>
                   </Grid>
                 </Grid>
               </Grid>
               <Grid item xs={12} sx={{ pt: "16px !important" }}>
-                <OperationsAreaChartCard />
+                <OperationsAreaChartCard
+                  total={balanceData?.operational_limit ?? 0}
+                  local={{
+                    label: balanceData?.local_currency || 'MLC',
+                    value: balanceData?.local_balance ?? 0,
+                  }}
+                  ext={{
+                    label: balanceData?.ext_currency || "USD",
+                    value: balanceData?.ext_balance ?? 0,
+                  }}
+                />
               </Grid>
               <Grid item xs={12}>
                 <Grid container direction="column">
@@ -114,14 +147,6 @@ const PopularCard = ({ isLoading }) => {
                               </Grid>
                             </Grid>
                           </Grid>
-                        </Grid>
-                        <Grid item>
-                          <Typography
-                            variant="subtitle2"
-                            sx={{ color: theme.palette.info.dark }}
-                          >
-                            {`${el.percent}% ${el.label}`}
-                          </Typography>
                         </Grid>
                       </Grid>
                       {!el.last && <Divider sx={{ my: 1.5 }} />}

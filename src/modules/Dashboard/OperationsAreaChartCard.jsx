@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 // material-ui
@@ -14,7 +15,7 @@ import chartData from "./chart-data/radial-bar-chart";
 
 // ===========================|| DASHBOARD DEFAULT - BAJAJ AREA CHART CARD ||=========================== //
 
-const OperationjAreaChartCard = () => {
+const OperationjAreaChartCard = ({ total, local, ext }) => {
   const theme = useTheme();
   const customization = useSelector((state) => state.customization);
   const { navType } = customization || { navType: null };
@@ -33,9 +34,23 @@ const OperationjAreaChartCard = () => {
 
   return (
     <Card sx={{ bgcolor: "none" }}>
-      <Chart options={chartData.options} series={chartData.series} type="radialBar" height={350}/>
+      <Chart
+        options={{
+          ...chartData.options,
+          labels: ["Total", `Total ${ext.label}`, `Total ${local.label}`],
+        }}
+        series={[total, ext.value, local.value]}
+        type="radialBar"
+        height={350}
+      />
     </Card>
   );
+};
+
+OperationjAreaChartCard.propTypes = {
+  total: PropTypes.number,
+  local: PropTypes.object,
+  ext: PropTypes.object,
 };
 
 export default OperationjAreaChartCard;
