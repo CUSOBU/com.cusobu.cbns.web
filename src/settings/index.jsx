@@ -1,7 +1,8 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import SmsFailedIcon from "@mui/icons-material/SmsFailed";
-import AutorenewIcon from "@mui/icons-material/Autorenew";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import TrackChangesIcon from '@mui/icons-material/TrackChanges';
 
 export const navigation = [
   {
@@ -15,21 +16,27 @@ export const navigation = [
     title: "Remittances",
   },
   {
+    title: "Pendientes",
+    exact: false,
+    link: "/remittances/pending",
+    icon: <PendingActionsIcon />,
+  },
+  {
     title: "Procesando",
     exact: false,
-    link: "/remittances",
-    icon: <AutorenewIcon />,
+    link: "/remittances/processing",
+    icon: <TrackChangesIcon />,
   },
   {
     title: "Completadas",
     exact: false,
-    link: "/remittances_completed",
+    link: "/remittances/completed",
     icon: <DoneAllIcon />,
   },
   {
     title: "Fallidas",
     exact: false,
-    link: "/remittances_fails",
+    link: "/remittances/fails",
     icon: <SmsFailedIcon />,
   },
 ];
