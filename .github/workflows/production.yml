@@ -12,8 +12,8 @@ jobs:
         uses: SpicyPizza/create-envfile@v1
         with:
           envkey_NODE_ENV: production
-          envkey_VITE_WEB_URL: https://cbns-web.cusobu.com
-          envkey_VITE_BACKEND_URL: https://cbns-api.cusobu.com
+          envkey_VITE_WEB_URL: ${{secrets.PRODUCTION_VITE_WEB_URL}}
+          envkey_VITE_BACKEND_URL: ${{secrets.PRODUCTION_VITE_BACKEND_URL}}
       - uses: actions/setup-node@v3
         with:
           node-version: 16
