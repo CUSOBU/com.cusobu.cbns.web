@@ -1,7 +1,7 @@
 name: Production Build & Deploy
 on:
   push:
-    branches: [github-build]
+    branches: [main]
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -11,7 +11,6 @@ jobs:
       - name: Create .env file
         uses: SpicyPizza/create-envfile@v1
         with:
-          envkey_NODE_ENV: production
           envkey_VITE_WEB_URL: ${{secrets.PRODUCTION_VITE_WEB_URL}}
           envkey_VITE_BACKEND_URL: ${{secrets.PRODUCTION_VITE_BACKEND_URL}}
       - uses: actions/setup-node@v3
