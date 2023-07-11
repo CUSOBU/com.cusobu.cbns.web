@@ -6,10 +6,10 @@ import { MainLayout } from "../layouts";
 
 // render - dashboard
 
-const Dashboard = Loadable(lazy(() => import("../modules/Remittances/Dashboard")));
-const RemittancesDefault = Loadable(lazy(() => import("../modules/Remittances/Processing")));
-const RemittancesSuccess = Loadable(lazy(() => import("../modules/Remittances/Completed")));
-const RemittancesFail = Loadable(lazy(() => import("../modules/Remittances/Fails")));
+const Dashboard = Loadable(lazy(() => import("../modules/Dashboard/index")));
+const RemittancesDefault = Loadable(
+  lazy(() => import("../modules/Remittances/index"))
+);
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -20,15 +20,22 @@ const MainRoutes = {
     {
       path: "/",
       element: <Dashboard />,
-    },{
-      path: "/remittances",
-      element: <RemittancesDefault />,
-    },{
-      path: "/remittances_completed",
-      element: <RemittancesSuccess />,
-    },{
-      path: "/remittances_fails",
-      element: <RemittancesFail />,
+    },
+    {
+      path: "/remittances/pending",
+      element: <RemittancesDefault status={["Pending"]} />,
+    },
+    {
+      path: "/remittances/processing",
+      element: <RemittancesDefault status={["Delivery"]} />,
+    },
+    {
+      path: "/remittances/completed",
+      element: <RemittancesDefault status={["Complete"]} />,
+    },
+    {
+      path: "/remittances/fails",
+      element: <RemittancesDefault status={["Cancel"]} />,
     },
   ],
 };

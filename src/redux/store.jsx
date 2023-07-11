@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import appReducer from "./states/app.state";
 import usersReducer from "./states/users.state";
 import sessionReducer from "./states/session.state";
+import customizationReducer from "./states/customizationState/customization.state";
 
 export const store = configureStore({
   reducer: {
     app: appReducer,
     users: usersReducer,
     session: sessionReducer,
+    customization: customizationReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

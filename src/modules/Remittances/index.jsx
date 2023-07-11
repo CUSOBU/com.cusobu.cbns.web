@@ -1,12 +1,13 @@
+import PropTypes from "prop-types";
 import { DateRangePicker } from "../../components";
 import DataTable from "./components/DataTable";
 import { Grid, Button } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
 import { useState } from "react";
+import AddIcon from "@mui/icons-material/Add";
 import { useDetailsContext } from "./contexts/DetailsContext";
 import { DIALOG_NAMESPACE } from "./constants/create";
 
-const Fails = () => {
+const RemittencesPage = ({status}) => {
   const [dateRange, setDateRange] = useState({
     startDate: null,
     endDate: null,
@@ -14,7 +15,7 @@ const Fails = () => {
   const { openDialog } = useDetailsContext(DIALOG_NAMESPACE);
 
   return (
-    <Grid sx={{ flexGrow: 1 }} container spacing={2}>
+    <Grid container spacing={2} maxWidth="xl">
       <Grid
         item
         xs={12}
@@ -41,7 +42,7 @@ const Fails = () => {
       </Grid>
       <Grid item xs={12}>
         <DataTable
-          status={["Cancel"]}
+          status={status}
           startDate={dateRange.startDate}
           endDate={dateRange.endDate}
         />
@@ -50,4 +51,8 @@ const Fails = () => {
   );
 };
 
-export default Fails;
+RemittencesPage.propTypes = {
+  status: PropTypes.array.isRequired,
+};
+
+export default RemittencesPage;

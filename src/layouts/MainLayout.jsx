@@ -1,6 +1,5 @@
 import { Outlet } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
 import Grid from "@mui/material/Grid";
 import { Copyright, Navbar, SideBar } from "../components";
 import { DetailsContextProvider } from "../modules/Remittances/contexts/DetailsContext";
@@ -8,11 +7,11 @@ import DetailRemittance from "../modules/Remittances/components/Details";
 import CreateRemittance from "../modules/Remittances/components/DialogCreate";
 import DialogConfirmCancel from "../modules/Remittances/components/DialogConfirmCancel";
 import DialogConfirmConfirm from "../modules/Remittances/components/DialogConfirmConfirm";
+import { DashboardContextProvider } from "../modules/Dashboard/contexts/DashboardContext";
 
 export default function MainLayout() {
   return (
-    <Box sx={{ display: "flex" }}>
-      <Navbar />
+    <Box style={{ display: "flex" }}>
       <SideBar />
       <Box
         component="main"
@@ -23,19 +22,22 @@ export default function MainLayout() {
               : theme.palette.grey[900],
           flexGrow: 1,
           display: "flex",
+          overflowY: "auto",
           flexDirection: "column",
-          minHeight: "100vh",
+          height: "100vh",
         }}
       >
-        <Toolbar />
-        <Grid container p={4}>
-          <DetailsContextProvider>
-            <DetailRemittance />
-            <CreateRemittance />
-            <DialogConfirmCancel />
-            <DialogConfirmConfirm />
-            <Outlet />
-          </DetailsContextProvider>
+        <Navbar />
+        <Grid container p={4} mt={8}>
+          <DashboardContextProvider>
+            <DetailsContextProvider>
+              <DetailRemittance />
+              <CreateRemittance />
+              <DialogConfirmCancel />
+              <DialogConfirmConfirm />
+              <Outlet />
+            </DetailsContextProvider>
+          </DashboardContextProvider>
         </Grid>
         <Copyright sx={{ mt: "auto", mb: "8px" }} />
       </Box>
