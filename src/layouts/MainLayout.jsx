@@ -7,6 +7,7 @@ import DetailRemittance from "../modules/Remittances/components/Details";
 import CreateRemittance from "../modules/Remittances/components/DialogCreate";
 import DialogConfirmCancel from "../modules/Remittances/components/DialogConfirmCancel";
 import DialogConfirmConfirm from "../modules/Remittances/components/DialogConfirmConfirm";
+import { DashboardContextProvider } from "../modules/Dashboard/contexts/DashboardContext";
 
 export default function MainLayout() {
   return (
@@ -23,18 +24,20 @@ export default function MainLayout() {
           display: "flex",
           overflowY: "auto",
           flexDirection: "column",
-          maxHeight: "100vh",
+          height: "100vh",
         }}
       >
         <Navbar />
         <Grid container p={4} mt={8}>
-          <DetailsContextProvider>
-            <DetailRemittance />
-            <CreateRemittance />
-            <DialogConfirmCancel />
-            <DialogConfirmConfirm />
-            <Outlet />
-          </DetailsContextProvider>
+          <DashboardContextProvider>
+            <DetailsContextProvider>
+              <DetailRemittance />
+              <CreateRemittance />
+              <DialogConfirmCancel />
+              <DialogConfirmConfirm />
+              <Outlet />
+            </DetailsContextProvider>
+          </DashboardContextProvider>
         </Grid>
         <Copyright sx={{ mt: "auto", mb: "8px" }} />
       </Box>

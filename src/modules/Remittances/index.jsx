@@ -15,7 +15,7 @@ const RemittencesPage = ({status}) => {
   const { openDialog } = useDetailsContext(DIALOG_NAMESPACE);
 
   return (
-    <Grid container spacing={2}>
+    <Grid container spacing={2} maxWidth="xl">
       <Grid
         item
         xs={12}

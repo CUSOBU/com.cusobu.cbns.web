@@ -10,10 +10,7 @@ import ActionCell from "./ActionCell";
 const DataTable = ({ status, startDate, endDate, actions }) => {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-
-  const removeRow = (identifier) => {
-    setData(data => data.filter(row => row.identifier !== identifier));
-  };
+  const [fetchDataFlag, setFetchDataFlag] = useState(false);
 
   const authAPI = new API(
     utils.api_url,
@@ -44,8 +41,10 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
   );
 
   useEffect(() => {
+    setFetchDataFlag(false);
     fetchData();
-  }, [startDate, endDate, status]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [startDate, endDate, status, fetchDataFlag]);
 
   return (
     <Table
@@ -54,7 +53,7 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
         if (column.field === 'Actions') {
           return {
             ...column,
-            renderCell: (params) => <ActionCell row={params.row} removeRow={removeRow} />
+            renderCell: (params) => <ActionCell row={params.row} setFetchDataFlag={setFetchDataFlag} />
           };
         }
         return column;

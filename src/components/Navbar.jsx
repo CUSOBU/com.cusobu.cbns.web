@@ -14,9 +14,19 @@ import MenuIcon from "@mui/icons-material/Menu";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import Menu from "@mui/material/Menu";
 import { setAnchorElUser, toggleSideBar } from "../redux/states/app.state";
+import { logout } from "../redux/states/session.state";
 import { navigation } from "../settings";
 
-const settings = ["Account", "Logout"];
+const settings = [
+  {
+    action: "account",
+    label: "Account",
+  },
+  {
+    action: "logout",
+    label: "Logout",
+  },
+];
 
 const drawerWidth = 200;
 
@@ -56,6 +66,16 @@ const Navbar = () => {
     dispatch(toggleSideBar());
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+    dispatch(setAnchorElUser(null));
+  };
+
+  const ON_SETTINGS = {
+    'account': () => handleCloseUserMenu(),
+    'logout': () => handleLogout()
+  }
+
   return (
     <AppBar position="fixed" sx={{ zIndex: "1100" }} open={open}>
       <Toolbar>
@@ -72,12 +92,7 @@ const Navbar = () => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography
-          variant="h3"
-          color="inherit"
-          noWrap
-          sx={{ flexGrow: 1 }}
-        >
+        <Typography variant="h3" color="inherit" noWrap sx={{ flexGrow: 1 }}>
           {navigation.find((nav) => nav.link === pathname)?.title ??
             "Dashboard"}
         </Typography>
@@ -117,9 +132,9 @@ const Navbar = () => {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
+              {settings.map(({ label, action }) => (
+                <MenuItem key={label} onClick={() => ON_SETTINGS[action]()}>
+                  <Typography textAlign="center">{label}</Typography>
                 </MenuItem>
               ))}
             </Menu>

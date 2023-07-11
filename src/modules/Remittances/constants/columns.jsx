@@ -10,58 +10,68 @@ export default [
     flex: 1,
   },
   {
-    field: "identifier",                                     
+    field: "identifier",
     headerName: "Id",
     width: 70,
   },
   {
     field: "full_name",
     headerName: "Nombre",
+    flex: 1,
   },
   {
     field: "phone_number",
     numeric: false,
     headerName: "Teléfono",
+    flex: 1,
   },
   {
     field: "cardNumber",
     headerName: "Tarjeta",
-    flex: 0.4,
+    flex: 1,
+    minWidth: 200
   },
   {
     field: "remittance_amount",
     headerName: "Remesa",
+    flex: 1,
   },
   {
     field: "remittance_currency",
     headerName: "Moneda",
+    flex: 1,
   },
   {
     field: "budget_amount",
     headerName: "Cobrado",
     roles: ["seller", "admin"],
+    flex: 1,
   },
   {
     field: "operation_cost",
     headerName: "Cobrado",
     roles: ["seller", "admin"],
+    flex: 1,
   },
   {
     field: "budget_currency",
     headerName: "Budget Currency",
     roles: ["seller", "admin"],
+    flex: 1,
   },
   {
     field: "status",
     headerName: "Estado",
+    flex: 1,
   },
   {
     field: "createdAt",
     headerName: "Fecha",
+    flex: 1,
   },
   {
     field: "provider",
-    flex: 0.4,
+    flex: 1,
     headerName: "Proveedor",
     roles: ["admin", "provider"],
   },
@@ -71,7 +81,7 @@ export default [
     type: "actions",
     width: 150,
     renderCell: renderRemittenceActions, // Prevents row selection on click
-    roles: ["provider"],
+    roles: ["provider", "admin"],
   },
 ];
 

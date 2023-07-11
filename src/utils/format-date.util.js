@@ -6,6 +6,6 @@ export const formatDate = (date) => {
     month: "long",
     day: "numeric",
   };
-  const dateTimeFormat = new Intl.DateTimeFormat("en-US", options);
+  const dateTimeFormat = new Intl.DateTimeFormat("es-ES", options);
   return dateTimeFormat.format(newDate);
 };

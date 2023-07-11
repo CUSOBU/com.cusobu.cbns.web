@@ -22,15 +22,19 @@ const MainRoutes = {
       element: <Dashboard />,
     },
     {
-      path: "/remittances",
-      element: <RemittancesDefault status={["Pending", "Delivery"]} />,
+      path: "/remittances/pending",
+      element: <RemittancesDefault status={["Pending"]} />,
     },
     {
-      path: "/remittances_completed",
+      path: "/remittances/processing",
+      element: <RemittancesDefault status={["Delivery"]} />,
+    },
+    {
+      path: "/remittances/completed",
       element: <RemittancesDefault status={["Complete"]} />,
     },
     {
-      path: "/remittances_fails",
+      path: "/remittances/fails",
       element: <RemittancesDefault status={["Cancel"]} />,
     },
   ],
