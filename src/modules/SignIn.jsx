@@ -40,7 +40,7 @@ const SignIn = () => {
       dispatch(login(userData));
       sessionStorage.setItem("user", email);
       sessionStorage.setItem("roles", data.roles);
-      navigateTo("/remittances");
+      navigateTo("/");
     } else {
       // Handle errors
       setError(data.error);
