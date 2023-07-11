@@ -1,0 +1,31 @@
+name: Production Build & Deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: git-checkout
+        uses: actions/checkout@v3
+      - name: Create .env file
+        uses: SpicyPizza/create-envfile@v1
+        with:
+          envkey_VITE_WEB_URL: ${{secrets.PRODUCTION_VITE_WEB_URL}}
+          envkey_VITE_BACKEND_URL: ${{secrets.PRODUCTION_VITE_BACKEND_URL}}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: "yarn"
+      - name: Install all dependencies
+        run: yarn
+      - name: Build
+        run: yarn build
+      - name: Push
+        uses: s0/git-publish-subdir-action@develop
+        env:
+          REPO: self
+          BRANCH: prod-build
+          FOLDER: dist
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MESSAGE: "Build: ({sha}) {msg}"
