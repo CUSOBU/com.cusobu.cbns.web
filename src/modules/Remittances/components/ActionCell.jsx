@@ -6,6 +6,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import IconButton from "@mui/material/IconButton";
 import Stack from "@mui/material/Stack";
@@ -31,6 +32,7 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
   const [evidence, setEvidence] = useState("");
   const [actionDialog, setActionDialog] = useState("");
   const [evidenceError, setEvidenceError] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const authAPI = new API(utils.api_url, localStorage.getItem("token") || "");
 
@@ -62,8 +64,6 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
       statusCode: 0,
       provider: sessionStorage.user,
     });
-    console.log(row);
-
     setFetchDataFlag();
   };
 
@@ -71,28 +71,31 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
     setOpenActionDialog(false);
   };
 
-  const onConfirmAction = () => {
+  const onConfirmAction = async () => {
     if (!evidence) {
       setEvidenceError(true);
       return;
     } else {
       setEvidenceError(false);
     }
-
+    setIsLoading(true);
     if (actionDialog === "Cancelar") {
-      authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
+      await authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
         status: "Cancel",
         statusCode: 4,
         evidence: evidence,
       });
     } else if (actionDialog === "Completar") {
-      authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
+      await authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
         status: "Complete",
         statusCode: 3,
         provider: sessionStorage.user,
         evidence: evidence,
       });
     }
+    setFetchDataFlag();
+    setIsLoading(false);
+    closeActionDialog();
   };
   const handleOpenConfirm = () => {
     setOpenActionDialog(true);
@@ -177,7 +180,7 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
         <DialogContent>
           <TextField
             autoFocus
-            label="Motivo de cancelación"
+            label="Evidencia"
             value={evidence}
             onChange={(e) => setEvidence(e.target.value)}
             fullWidth
@@ -192,8 +195,8 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
         </DialogContent>
         <DialogActions>
           <Button onClick={closeActionDialog}>Cancelar</Button>
-          <Button onClick={onConfirmAction} autoFocus>
-            Confirmar
+          <Button onClick={onConfirmAction} disabled={isLoading} autoFocus>
+          {isLoading ? <CircularProgress size={24} /> : "Confirmar"}
           </Button>
         </DialogActions>
       </Dialog>
