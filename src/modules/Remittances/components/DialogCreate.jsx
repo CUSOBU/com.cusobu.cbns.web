@@ -25,10 +25,24 @@ export default function FormDialog() {
   const [remittanceAmount, setRemittanceAmount] = useState(0);
   const [operationCost, setOperationCost] = useState(0);
   const [budgetAmount, setBudgetAmount] = useState(110);
+  const [remittanceCustomerRate, setRemittanceCustomerRate] = useState(0);
+  const [remittanceOperationalRate, setRemittanceOperationalRate] = useState(0);
 
   useEffect(() => {
-    calculateRemittanceAmount(remittanceCurrency, budgetAmount, budgetCurrency);
-  }, [remittanceCurrency, budgetCurrency, remittanceAmount, budgetAmount]);
+    calculateRemittanceAmount(
+      remittanceCurrency,
+      budgetAmount,
+      budgetCurrency,
+      remittanceCustomerRate
+    );
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    remittanceCurrency,
+    budgetCurrency,
+    remittanceAmount,
+    budgetAmount,
+    remittanceCustomerRate,
+  ]);
 
   const [isLoading, setIsLoading] = useState(false);
 
@@ -67,18 +81,27 @@ export default function FormDialog() {
   const calculateRemittanceAmount = async (
     remmitance_currency,
     budget,
-    budget_currency
+    budget_currency,
+    remittance_rate
   ) => {
     if (budget > 0) {
       const data = await authAPI.post("/remittances/pricing", {
         remmitance_currency,
         budget,
         budget_currency,
+        remittance_rate,
       });
       setRemittanceAmount(data.remittance_prices.remittance_amount);
       setOperationCost(data.remittance_prices.operation_cost);
-      // console.log("Proces", data);
+      if (remittanceCustomerRate === 0) {
+        setRemittanceCustomerRate(data.remittance_prices.customer_price);
+      }
+      setRemittanceOperationalRate(data.remittance_prices.operational_price);
     }
+  };
+
+  const onchangeRemittanceRate = async (event) => {
+    setRemittanceCustomerRate(event.target.value);
   };
 
   return (
@@ -183,7 +206,7 @@ export default function FormDialog() {
                 <MenuItem value={"UYU"}>UYU</MenuItem>
               </Select>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <TextField
                 label="Precio (Enviar)"
                 type="number"
@@ -226,9 +249,9 @@ export default function FormDialog() {
                 <MenuItem value={"CUP"}>CUP</MenuItem>
               </Select>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item xs={3}>
               <TextField
-                label="Monto (Recibe)"
+                label={"Recibe:"}
                 type="number"
                 value={remittanceAmount}
                 variant="filled"
@@ -247,10 +270,43 @@ export default function FormDialog() {
                 disabled
               />
             </Grid>
+            <Grid item xs={2}>
+              <TextField
+                label={`Rate (> ${remittanceOperationalRate})`}
+                type="number"
+                variant="filled"
+                value={remittanceCustomerRate}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">%</InputAdornment>
+                  ),
+                }}
+                fullWidth
+                sx={{ mb: 1 }}
+                {...register("remittance_rate", {
+                  min: {
+                    value: remittanceOperationalRate,
+                    message: "Mínimo valor",
+                  },
+                })}
+                error={!!errors.remittance_amount}
+                helperText={errors.remittance_amount?.message}
+                onChange={(event) => {
+                  onchangeRemittanceRate(event);
+                }}
+              />
+              {remittanceCustomerRate < remittanceOperationalRate && (
+                <Typography variant="caption" color="error">
+                  El rate debe ser mayor a {remittanceOperationalRate}
+                </Typography>
+              )}
+            </Grid>
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog} disabled={isLoading}>Cancel</Button>
+          <Button onClick={closeDialog} disabled={isLoading}>
+            Cancel
+          </Button>
           <Button type="submit" disabled={isLoading}>
             {isLoading ? <CircularProgress size={24} /> : "Create"}
           </Button>
