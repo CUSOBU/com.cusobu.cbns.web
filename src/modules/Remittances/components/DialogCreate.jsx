@@ -97,9 +97,6 @@ export default function FormDialog() {
         setRemittanceCustomerRate(data.remittance_prices.customer_price);
       }
       setRemittanceOperationalRate(data.remittance_prices.operational_price);
-
-      // data.remittance_rate.setValue();
-      // console.log("Proces", data);
     }
   };
 
