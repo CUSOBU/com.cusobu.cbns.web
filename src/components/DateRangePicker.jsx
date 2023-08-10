@@ -27,29 +27,32 @@ const PickerComponent = ({ onDateChange }) => {
 
   const classes = useStyles();
 
-  useEffect(() => {}, [startDate, endDate]);
+  useEffect(() => { }, [startDate, endDate]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Grid display="flex" sx={{ mx: 3, my: "auto" }} maxWidth="lg">
+      <Grid display="flex" sx={{ mx: 3, my: "auto", flexWrap: "wrap" }} maxWidth="lg">
         <DatePicker
           label="Desde"
           value={startDate}
           onChange={(newValue) => setStartDate(newValue)}
           className={classes.root}
+          sx={{ minWidth: 100 }}
         />
-        <Box sx={{ mx: 2, my: "auto" }}> - </Box>
+        <Box sx={{ mx: 2, my: "auto", display: { xs: "none", sm: "block" } }}> - </Box>
         <DatePicker
           label="Hasta"
           value={endDate}
           onChange={(newValue) => setEndDate(newValue)}
           className={classes.root}
+          sx={{ minWidth: 100, mt: { xs: 2, sm: 0 } }}
         />
-        <Box sx={{ mx: 2, my: "auto" }}>
+        <Box sx={{ mx: { xs: 0, sm: 2 }, my: "auto", mt: { xs: 2, sm: 0 } }}>
           <Button
             variant="contained"
             size="small"
             endIcon={<ManageSearchIcon />}
+            sx={{ minWidth: 100 }}
             onClick={() => {
               onDateChange({
                 startDate: startDate.toISOString(),
