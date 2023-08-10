@@ -5,6 +5,7 @@ import utils from "../../../utils/env";
 import Table from "../../../components/Table";
 import { useColumnsByRole } from "../hooks/columnsByRole";
 import ActionCell from "./ActionCell";
+import { Box, Grid } from "@mui/material";
 
 
 const DataTable = ({ status, startDate, endDate, actions }) => {
@@ -43,26 +44,42 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
   useEffect(() => {
     setFetchDataFlag(false);
     fetchData();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [startDate, endDate, status, fetchDataFlag]);
 
   return (
-    <Table
-      data={data}
-      columns={getColumns.map(column => {
-        if (column.field === 'Actions') {
-          return {
-            ...column,
-            renderCell: (params) => <ActionCell row={params.row} setFetchDataFlag={setFetchDataFlag} />
-          };
-        }
-        return column;
-      })}
-      loading={loading || false}
-      page={0}
-      pageSize={20}
-      pageSizeOptions={[5, 10, 20]}
-    />
+    <Grid container>
+      <Grid xs={12} sx={{ display: { xs: "block", sm: "none" } }}>
+        {data.map((entry, index) => 
+          <Box key={index} sx={{border: "1px solid #cccccc", my:1, p:1, borderRadius: 2}}>
+            <div>{`${entry.full_name}`}</div>
+            <div>{`${entry.phone_number}`}</div>
+            <div>{entry.cardNumber}</div>
+            <div>{`$${entry.remittance_amount} ${entry.remittance_currency} - $${entry.budget_amount} ${entry.budget_currency}`}</div>
+            <div>{`${entry.status}`}</div>
+            <ActionCell row={entry} setFetchDataFlag={setFetchDataFlag} />
+          </Box>
+        )}
+      </Grid>
+      <Grid xs={12} sx={{ display: { xs: "none", sm: "block" } }}>
+        <Table
+          data={data}
+          columns={getColumns.map(column => {
+            if (column.field === 'Actions') {
+              return {
+                ...column,
+                renderCell: (params) => <ActionCell row={params.row} setFetchDataFlag={setFetchDataFlag} />
+              };
+            }
+            return column;
+          })}
+          loading={loading || false}
+          page={0}
+          pageSize={20}
+          pageSizeOptions={[5, 10, 20]}
+        />
+      </Grid>
+    </Grid>
   );
 };
 

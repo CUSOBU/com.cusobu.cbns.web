@@ -28,8 +28,6 @@ const SignIn = () => {
     const password = formData.get("password");
 
     const data = await publicAPI.post("/login", { email, password });
-    console.log(data);
-
     if (data && data.token_jwt) {
       // Save token on localStorage 
       localStorage.setItem("token", data.token_jwt);
