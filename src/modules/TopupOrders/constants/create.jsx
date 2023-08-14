@@ -1,4 +1,4 @@
-export const DIALOG_NAMESPACE = "CREATE_REMITTANCES";
+export const DIALOG_NAMESPACE = "CREATE_TOPUPORDER";
 export const fields = [
   {
     field: "email",

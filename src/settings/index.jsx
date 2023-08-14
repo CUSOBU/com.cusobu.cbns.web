@@ -13,7 +13,7 @@ export const navigation = [
   },
   {
     header: true,
-    title: "Remittances",
+    title: "Remesas",
   },
   {
     title: "Pendientes",
@@ -41,7 +41,7 @@ export const navigation = [
   },
   {
     header: true,
-    title: "Topups",
+    title: "Recargas",
   },
   {
     title: "Pendientes",

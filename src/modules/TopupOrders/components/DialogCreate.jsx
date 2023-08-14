@@ -17,97 +17,93 @@ import API from "../../../services/EntityApiServices";
 import utils from "../../../utils/env";
 import CircularProgress from "@mui/material/CircularProgress";
 
+
 export default function FormDialog() {
   const { closeDialog, isOpen } = useDetailsContext(DIALOG_NAMESPACE);
   // const {budgetCurrency, setBudgetCurrency} = useState("CUP");
-  const [remittanceCurrency, setRemittanceCurrency] = useState("MLC");
-  const [budgetCurrency, setBudgetCurrency] = useState("USD");
-  const [remittanceAmount, setRemittanceAmount] = useState(0);
-  const [operationCost, setOperationCost] = useState(0);
-  const [budgetAmount, setBudgetAmount] = useState(110);
-  const [remittanceCustomerRate, setRemittanceCustomerRate] = useState(0);
-  const [remittanceOperationalRate, setRemittanceOperationalRate] = useState(0);
 
-  useEffect(() => {
-    calculateRemittanceAmount(
-      remittanceCurrency,
-      budgetAmount,
-      budgetCurrency,
-      remittanceCustomerRate
-    );
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    remittanceCurrency,
-    budgetCurrency,
-    remittanceAmount,
-    budgetAmount,
-    remittanceCustomerRate,
-  ]);
+  const [topupBudget, setTopupBudget] = useState(0);
+  const [topupAmount, setTopupAmount] = useState(0);
+  const [topupCost, setTopupCost] = useState(0);
+  const [topupOffer, setTopupOffer] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  const [isLoading, setIsLoading] = useState(false);
 
   const authAPI = new API(
-    utils.api_url, // eslint-disable-line
-    localStorage.getItem("token") || ""
+      utils.api_url,
+      localStorage.getItem("token") || ""
   );
+
+  const fetchData = async () => {
+    try {
+      setLoading(true)
+      let response = await authAPI.get(
+          `topups?page=1&pageSize=100`
+      );
+      setData(response.data);
+      setLoading(false);
+    } catch (err) {
+      setLoading(false);
+    }
+  };
+
+  // useEffect(() => {
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [
+  //   topupOffer,
+  //
+  // ]);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
-    reset,
+    // reset,
   } = useForm();
 
+  // useEffect(() => {
+  //   !isOpen && reset();
+  // }, [isOpen]);
+
   useEffect(() => {
-    !isOpen && reset();
-  }, [isOpen]);
+    fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onSubmit = async (formData) => {
-    setIsLoading(true);
+    setLoading(true);
     const data = {
       ...formData,
     };
     await authAPI
-      .post("/remittances", data)
+      .post("/topuporders", data)
       .then(closeDialog)
       .catch((errors) => {
         console.log({ errors });
       })
       .finally(() => {
-        setIsLoading(false);
+        setLoading(false);
       });
   };
 
-  const calculateRemittanceAmount = async (
-    remmitance_currency,
-    budget,
-    budget_currency,
-    remittance_rate
-  ) => {
-    if (budget > 0) {
-      const data = await authAPI.post("/remittances/pricing", {
-        remmitance_currency,
-        budget,
-        budget_currency,
-        remittance_rate,
-      });
-      setRemittanceAmount(data.remittance_prices.remittance_amount);
-      setOperationCost(data.remittance_prices.operation_cost);
-      if (remittanceCustomerRate === 0) {
-        setRemittanceCustomerRate(data.remittance_prices.customer_price);
-      }
-      setRemittanceOperationalRate(data.remittance_prices.operational_price);
+  // Función que maneja el cambio en el select
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value; // Esta es solo el id
+    const selectedItem = data.find(item => item.id === selectedValue);
+
+    if (selectedItem) {
+      setTopupOffer(selectedItem);
+      setTopupBudget(selectedItem.price);
+      setTopupAmount(selectedItem.amount);
+      setTopupCost(selectedItem.cost); // Asumo que querrías usar "cost", ya que estás duplicando "price". Si no es así, corrige esto.
     }
-  };
-
-  const onchangeRemittanceRate = async (event) => {
-    setRemittanceCustomerRate(event.target.value);
   };
 
   return (
     <Dialog open={isOpen} onClose={closeDialog} maxWidth="md">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <DialogTitle>Enviar Remesa</DialogTitle>
+        <DialogTitle>Enviar Micro-recarga</DialogTitle>
         <DialogContent>
           <Grid
             container
@@ -127,133 +123,96 @@ export default function FormDialog() {
                 <Divider sx={{ my: 2 }} />
               </Grid>
             </Grid>
-
-            <Grid item xs={6}>
+            <Grid item xs={5}>
               <TextField
                 label="Nombre completo"
                 variant="filled"
                 fullWidth
                 sx={{ mb: 1 }}
-                {...register("full_name", {
+                {...register("senderName", {
                   required: "Este campo es requerido",
                   minLength: { value: 3, message: "Mínimo de valor 3" },
                 })}
-                error={!!errors.full_name}
-                helperText={errors.full_name?.message}
+                error={!!errors.senderName}
+                helperText={errors.senderName?.message}
               />
             </Grid>
             <Grid item xs={6}>
-              <TextField
-                label="Teléfonos"
-                type="number"
-                variant="filled"
-                fullWidth
-                sx={{ mb: 1 }}
-                {...register("phone_number", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.phone_number}
-                helperText={errors.phone_number?.message}
-              />
+              <Select
+                  label="Oferta"
+                  variant="filled"
+                  fullWidth
+                  value={topupOffer.id? topupOffer.id : ""}
+                  {...register("topupId", {
+                    required: "Este campo es requerido",
+                    min: { value: 0, message: "Mínimo de valor cero" },
+                  })}
+                  error={!!errors.topupId}
+                  onChange={handleSelectChange}
+              >
+                {data.map((item) => (
+                    <MenuItem key={item.id} value={item.id}>
+                      {item.price} - {item.amount} : {item.header}
+                    </MenuItem>
+                ))}
+              </Select>
             </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Tarjeta"
-                type="number"
-                variant="filled"
-                fullWidth
-                sx={{ mb: 1 }}
-                {...register("cardNumber", {
-                  required: "Este campo es requerido",
-                  min: { value: 12, message: "Mínimo de valor 12" },
-                })}
-                error={!!errors.cardNumber}
-                helperText={errors.cardNumber?.message}
-              />
-            </Grid>
-
             <Grid container sx={{ my: 2 }}>
               <Grid item xs={1}>
                 <Divider sx={{ my: 2 }} />
               </Grid>
               <Grid item xs={1} sx={{ my: "auto" }}>
                 <Typography align="center" variant="body2">
-                  Remesa
+                  Recarga
                 </Typography>
               </Grid>
               <Grid item xs={10}>
                 <Divider sx={{ my: 2 }} />
               </Grid>
             </Grid>
-
-            <Grid item xs={2}>
-              <Select
-                label="Moneda"
-                variant="filled"
-                value={budgetCurrency}
-                fullWidth
-                {...register("budget_currency", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.budget_currency}
-                onChange={(event) => {
-                  setBudgetCurrency(event.target.value);
-                }}
-              >
-                <MenuItem value={"USD"}>USD</MenuItem>
-                <MenuItem value={"UYU"}>UYU</MenuItem>
-              </Select>
-            </Grid>
             <Grid item xs={3}>
               <TextField
-                label="Precio (Enviar)"
-                type="number"
-                variant="filled"
-                fullWidth
-                value={budgetAmount}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">$</InputAdornment>
-                  ),
-                }}
-                sx={{ mb: 1 }}
-                {...register("budget_amount", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.budget_amount}
-                helperText={errors.budget_amount?.message}
-                onChange={(event) => {
-                  setBudgetAmount(event.target.value);
-                }}
+                  label="Teléfono"
+                  type="number"
+                  variant="filled"
+                  fullWidth
+                  sx={{ mb: 1 }}
+                  {...register("phoneNumber", {
+                    required: "Este campo es requerido",
+                    min: { value: 0, message: "Mínimo de valor 6" },
+                  })}
+                  error={!!errors.phoneNumber}
+                  helperText={errors.phoneNumber?.message}
               />
             </Grid>
-            <Grid item xs={2}>
-              <Select
-                label="Moneda"
-                variant="filled"
-                value={remittanceCurrency}
-                fullWidth
-                {...register("remittance_currency", {
-                  required: "Este campo es requerido",
-                  min: { value: 0, message: "Mínimo de valor cero" },
-                })}
-                error={!!errors.remittance_currency}
-                onChange={(event) => {
-                  setRemittanceCurrency(event.target.value);
-                }}
-              >
-                <MenuItem value={"MLC"}>MLC</MenuItem>
-                <MenuItem value={"CUP"}>CUP</MenuItem>
-              </Select>
+            <Grid item xs={3}>
+              <input type="hidden" {...register("budget")} value={topupBudget} />
+              <TextField
+                  label={"Cobrar:"}
+                  type="number"
+                  value={topupBudget}
+                  variant="filled"
+                  InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                  sx={{ mb: 1 }}
+                  {...register("budget", {
+                    min: { value: 0, message: "Mínimo de valor 0" },
+                  })}
+                  error={!!errors.budget}
+                  helperText={errors.budget?.message}
+                  disabled
+              />
             </Grid>
             <Grid item xs={3}>
+              <input type="hidden" {...register("amount")} value={topupAmount} />
               <TextField
-                label={"Recibe:"}
+                label={"Recarga:"}
                 type="number"
-                value={remittanceAmount}
+                value={topupAmount}
                 variant="filled"
                 InputProps={{
                   startAdornment: (
@@ -262,53 +221,46 @@ export default function FormDialog() {
                 }}
                 fullWidth
                 sx={{ mb: 1 }}
-                {...register("remittance_amount", {
-                  min: { value: 0, message: "Mínimo de valor cero" },
+                {...register("amount", {
+                  min: { value: 0, message: "Mínimo de valor 0" },
                 })}
-                error={!!errors.remittance_amount}
-                helperText={errors.remittance_amount?.message}
+                error={!!errors.amount}
+                helperText={errors.amount?.message}
                 disabled
               />
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
+              <input type="hidden" {...register("cost")} value={topupCost} />
               <TextField
-                label={`Rate (> ${remittanceOperationalRate})`}
-                type="number"
-                variant="filled"
-                value={remittanceCustomerRate}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">%</InputAdornment>
-                  ),
-                }}
-                fullWidth
-                sx={{ mb: 1 }}
-                {...register("remittance_rate", {
-                  min: {
-                    value: remittanceOperationalRate,
-                    message: "Mínimo valor",
-                  },
-                })}
-                error={!!errors.remittance_amount}
-                helperText={errors.remittance_amount?.message}
-                onChange={(event) => {
-                  onchangeRemittanceRate(event);
-                }}
+                  label={"Costo:"}
+                  type="number"
+                  value={topupCost}
+                  variant="filled"
+                  InputProps={{
+                    startAdornment: (
+                        <InputAdornment position="start">$</InputAdornment>
+                    ),
+                  }}
+                  fullWidth
+                  sx={{ mb: 1 }}
+                  {...register("cost", {
+                    min: { value: 0, message: "Mínimo de valor 0" },
+                  })}
+                  error={!!errors.cost}
+                  helperText={errors.cost?.message}
+                  disabled
               />
-              {remittanceCustomerRate < remittanceOperationalRate && (
-                <Typography variant="caption" color="error">
-                  El rate debe ser mayor a {remittanceOperationalRate}
-                </Typography>
-              )}
             </Grid>
+
+
           </Grid>
         </DialogContent>
         <DialogActions>
-          <Button onClick={closeDialog} disabled={isLoading}>
+          <Button onClick={closeDialog} disabled={loading}>
             Cancel
           </Button>
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? <CircularProgress size={24} /> : "Create"}
+          <Button type="submit" disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : "Create"}
           </Button>
         </DialogActions>
       </form>

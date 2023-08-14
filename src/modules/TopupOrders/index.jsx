@@ -36,7 +36,7 @@ const TopupOrdersPage = ({status}) => {
             startIcon={<AddIcon />}
             onClick={openDialog}
           >
-            Create
+            Crear
           </Button>
         )}
       </Grid>

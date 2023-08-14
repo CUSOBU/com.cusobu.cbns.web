@@ -69,6 +69,7 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
 
   const closeActionDialog = () => {
     setOpenActionDialog(false);
+
   };
 
   const onConfirmAction = async () => {

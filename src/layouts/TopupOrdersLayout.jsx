@@ -5,7 +5,7 @@ import { Copyright, Navbar, SideBar } from "../components";
 import { DetailsContextProvider } from "../modules/TopupOrders/contexts/DetailsContext";
 import DetailTopupOrders from "../modules/TopupOrders/components/Details";
 
-// import CreateRemittance from "../modules/Remittances/components/DialogCreate";
+import CreateTopupOrder from "../modules/TopupOrders/components/DialogCreate";
 // import DialogConfirmCancel from "../modules/Remittances/components/DialogConfirmCancel";
 // import DialogConfirmConfirm from "../modules/Remittances/components/DialogConfirmConfirm";
 // import { DashboardContextProvider } from "../modules/Dashboard/contexts/DashboardContext";
@@ -32,9 +32,7 @@ export default function MainLayout() {
         <Grid container p={4} mt={8}>
             <DetailsContextProvider>
               <DetailTopupOrders />
-              {/*<CreateRemittance />*/}
-              {/*<DialogConfirmCancel />*/}
-              {/*<DialogConfirmConfirm />*/}
+              <CreateTopupOrder />
               <Outlet />
             </DetailsContextProvider>
         </Grid>

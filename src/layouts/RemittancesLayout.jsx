@@ -32,8 +32,8 @@ export default function MainLayout() {
             <DetailsContextProvider>
               <DetailRemittance />
               <CreateRemittance />
-              <DialogConfirmCancel />
-              <DialogConfirmConfirm />
+              {/*<DialogConfirmCancel />*/}
+              {/*<DialogConfirmConfirm />*/}
               <Outlet />
             </DetailsContextProvider>
         </Grid>
