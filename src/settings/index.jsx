@@ -39,4 +39,32 @@ export const navigation = [
     link: "/remittances/fails",
     icon: <SmsFailedIcon />,
   },
+  {
+    header: true,
+    title: "Topups",
+  },
+  {
+    title: "Pendientes",
+    exact: false,
+    link: "/topuporders/pending",
+    icon: <PendingActionsIcon />,
+  },
+  {
+    title: "Procesando",
+    exact: false,
+    link: "/topuporders/processing",
+    icon: <TrackChangesIcon />,
+  },
+  {
+    title: "Completadas",
+    exact: false,
+    link: "/topuporders/completed",
+    icon: <DoneAllIcon />,
+  },
+  {
+    title: "Fallidas",
+    exact: false,
+    link: "/topuporders/fails",
+    icon: <SmsFailedIcon />,
+  },
 ];

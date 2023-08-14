@@ -45,26 +45,26 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
     openDetails(row);
   };
 
-  const handleGetRemittance = async () => {
+  const handleGetTopupOrder = async () => {
     //Submit to get remittance
-    console.log(`Se elimina el elemento ${row.identifier}`);
-    await authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
+    console.log(`Se obtiene el elemento ${row.id}`);
+    await authAPI.patch(`/topuporders/setstatus/${row?.id}`, {
       status: "Delivery",
       statusCode: 1,
       provider: sessionStorage.user,
     });
-    setFetchDataFlag();
+    setFetchDataFlag(true);
   };
 
-  const handleReleaseRemittance = async () => {
+  const handleReleaseTopupOrder = async () => {
     //Submit to get remittance
-    console.log(`Se elimina el elemento ${row.identifier}`);
-    await authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
+    console.log(`Se libera el elemento ${row.id}`);
+    await authAPI.patch(`/topuporders/setstatus/${row?.id}`, {
       status: "Pending",
       statusCode: 0,
       provider: sessionStorage.user,
     });
-    setFetchDataFlag();
+    setFetchDataFlag(true);
   };
 
   const closeActionDialog = () => {
@@ -80,20 +80,20 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
     }
     setIsLoading(true);
     if (actionDialog === "Cancelar") {
-      await authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
+      await authAPI.patch(`/topuporders/setstatus/${row?.id}`, {
         status: "Cancel",
         statusCode: 4,
         evidence: evidence,
       });
     } else if (actionDialog === "Completar") {
-      await authAPI.patch(`/remittances/setstatus/${row?.identifier}`, {
+      await authAPI.patch(`/topuporders/setstatus/${row?.id}`, {
         status: "Complete",
         statusCode: 3,
         provider: sessionStorage.user,
         evidence: evidence,
       });
     }
-    setFetchDataFlag();
+    setFetchDataFlag(true);
     setIsLoading(false);
     closeActionDialog();
   };
@@ -126,7 +126,7 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
               aria-label="Get"
               size="large"
               sx={{ margin: 0, padding: 0 }}
-              onClick={handleGetRemittance}
+              onClick={handleGetTopupOrder}
             >
               <PlaylistAddCheckCircleIcon fontSize="inherit" />
             </IconButton>
@@ -140,7 +140,7 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
               color="info"
               aria-label="Release"
               size="large"
-              onClick={handleReleaseRemittance}
+              onClick={handleReleaseTopupOrder}
               sx={{ margin: 0, padding: 0 }}
             >
               <ExitToAppIcon fontSize="inherit" />
@@ -204,6 +204,7 @@ const ActionCell = ({ row, setFetchDataFlag }) => {
   );
 };
 
+
 ActionCell.propTypes = {
   row: PropTypes.object.isRequired,
   setFetchDataFlag: PropTypes.func,
@@ -211,6 +212,6 @@ ActionCell.propTypes = {
 
 export default ActionCell;
 
-export const renderRemittenceActions = (row, setFetchDataFlag) => {
+export const renderTopupsActions = (row, setFetchDataFlag) => {
   return <ActionCell row={row} setFetchDataFlag={setFetchDataFlag} />;
 };
