@@ -31,7 +31,6 @@ class API {
   }
 
   async patch(url, data) {
-    console.log("patch", url, data);
     try {
       const response = await this.client.post(url, data);
       return response.data;
