@@ -41,7 +41,6 @@ const DataTable = ({ status, startDate, endDate, actions }) => {
 
   useEffect(() => {
       if (!fetchDataFlag) {
-          console.log("Reloading Data");
           setLoading(true);
           fetchData().then(() => setLoading(false));
       }

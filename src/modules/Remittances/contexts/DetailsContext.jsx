@@ -53,7 +53,6 @@ function useDetailsContext(dialog) {
       payload: isOpen ? context.payload : null,
     };
   } catch (e) {
-    console.log(e);
     return {
       openDialog: () => {},
       closeDialog: () => {},
