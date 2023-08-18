@@ -97,7 +97,14 @@ export default function FormDialog() {
       setTopupBudget(selectedItem.price);
       setTopupAmount(selectedItem.amount);
       setTopupCost(selectedItem.cost); // Asumo que querrías usar "cost", ya que estás duplicando "price". Si no es así, corrige esto.
+      console.log("Chenged")
+      console.log("selectedItem", selectedItem);
+      console.log("topupOffer", topupOffer);
+        console.log("topupBudget", topupBudget);
+        console.log("topupAmount", topupAmount);
+        console.log("topupCost", topupCost);
     }
+    console.log("selectedItem", selectedItem);
   };
 
   return (
@@ -199,9 +206,6 @@ export default function FormDialog() {
                   }}
                   fullWidth
                   sx={{ mb: 1 }}
-                  {...register("budget", {
-                    min: { value: 0, message: "Mínimo de valor 0" },
-                  })}
                   error={!!errors.budget}
                   helperText={errors.budget?.message}
                   disabled
@@ -221,9 +225,6 @@ export default function FormDialog() {
                 }}
                 fullWidth
                 sx={{ mb: 1 }}
-                {...register("amount", {
-                  min: { value: 0, message: "Mínimo de valor 0" },
-                })}
                 error={!!errors.amount}
                 helperText={errors.amount?.message}
                 disabled
@@ -243,15 +244,11 @@ export default function FormDialog() {
                   }}
                   fullWidth
                   sx={{ mb: 1 }}
-                  {...register("cost", {
-                    min: { value: 0, message: "Mínimo de valor 0" },
-                  })}
                   error={!!errors.cost}
                   helperText={errors.cost?.message}
                   disabled
               />
             </Grid>
-
 
           </Grid>
         </DialogContent>
