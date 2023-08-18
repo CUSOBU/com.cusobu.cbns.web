@@ -15,16 +15,17 @@ export default [
         headerName: "id",
         flex: 1,
     },
-    // {
-    //     field: "topupId",
-    //     headerName: "Oferta",
-    //     flex: 1,
-    // },
+    {
+        field: "phoneNumber",
+        headerName: "Teléfono",
+        flex: 2,
+    },
     {
         field: "budget",
         headerName: "Cobrado",
         numeric: true,
-        flex: 1
+        flex: 1,
+        roles: ["seller", "admin"],
     },
     {
         field: "cost",
