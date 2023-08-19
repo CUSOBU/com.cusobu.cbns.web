@@ -74,7 +74,7 @@ export default function FormDialog() {
   const onSubmit = async (formData) => {
     setLoading(true);
     const data = {
-      ...formData,
+      ...formData,budget: topupBudget, amount: topupAmount, cost: topupCost
     };
     await authAPI
       .post("/topuporders", data)
